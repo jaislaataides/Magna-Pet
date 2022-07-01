@@ -1,5 +1,5 @@
 <h1>Linha do tempo</h1>
-<hr>
+
 <h4>Versão 1 - 06890bd</h4>
 
 <h5>Features</h5>
