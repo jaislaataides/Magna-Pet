@@ -1,9 +1,11 @@
 <h1>Linha do tempo</h1>
 
-<h4>Versão 1 - 06890bd</h4>
+<h4>Versão 1 - {06890bd}</h4>
+
+<hr>
 
 <h5>Features</h5>
-<br>
+
 <ul>
 <li><strong>Cadastros:</strong> tutor, clinica, pets;</li>
 <li><strong>Tratamentos de erro</strong> de todas as funções implementadas na main;</li>
