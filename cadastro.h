@@ -17,7 +17,8 @@ char *CPF(){
     char *input = malloc(14*sizeof(char*));
     fflush(stdin);
     printf("\nDigite seu CPF ou CNPJ: ");
-    fgets(input, 14, stdin);
+    fgets(input, 15, stdin);
+    printf("%s",input);
     tratamentoCPFCNPJ(input);
     return input;
 }
@@ -55,14 +56,13 @@ void Confirma(char *palavra1, char *palavra3){
 
 //---------- C A D A S T R A R   P E T S ----------
 
-//setar variavel/vetor struct
-int Quantidade(){
+//setar vetor struct
+int Quantidade(char *palavra){
     int *quant = malloc(sizeof(int));
     fflush(stdin);
-    do{
     printf("\nQuantos pets deseja cadastrar? \n");
     scanf("%d",&quant);
-    }while (quant<1 || quant>30);
+    tratamentoQuantidade(quant, palavra);
     return quant;
 }
 
@@ -94,12 +94,12 @@ void Medicacao(){
     fflush(stdin);
     printf("\n%s faz uso de alguma medicacao? Digite 0 caso nao ou a quantidade de medicamentos: ",dono.animal.nomepet);
     scanf("%d",&qtd);
-    dono.animal.medicacao = malloc(qtd * sizeof(char*));
-    for (int i=0; i<qtd; i++){
-        dono.animal.medicacao[i] = malloc(40 * sizeof(char));
+    animal[i].medicacao = malloc(qtd * sizeof(char*));
+    for (i=0; i<qtd; i++){
+        animal[i].medicacao[i] = malloc(40 * sizeof(char));
         fflush(stdin);
         printf("\nDigite o nome do %d medicamento: ",i+1);
-        fgets(dono.animal.medicacao[i], 40, stdin);
+        fgets(animal[i].medicacao[i], 40, stdin);
     }  
 } 
 
@@ -110,11 +110,11 @@ void Diagnostico(){
     printf("\n%s tem alguma doenca cronica, disfuncao ou outro diagnostico?\nDigite 0 caso nao ou a quantidade de diagnosticos: ");
     scanf("%d",&qtd);
     dono.animal.diagnostico = malloc(qtd * sizeof(char*));
-    for(int i=0; i<qtd; i++){
-        dono.animal.diagnostico[i] = malloc(40 * sizeof(char));;
+    for(i=0; i<qtd; i++){
+        animal[i].diagnostico[i] = malloc(40 * sizeof(char));;
         fflush(stdin);
         printf("\nDigite o nome do problema: ");
-        fgets(dono.animal.diagnostico[i], 40, stdin);
+        fgets(animal[i].diagnostico[i], 40, stdin);
     }
 }
 

@@ -1,4 +1,3 @@
-
 #include "validacoes.h"
 
 //tratamento email
@@ -12,22 +11,23 @@ void tratamentoEmail(char *email){
 //tratamento cpf ou cnpj
 void tratamentoCPFCNPJ(char *input){
     back:
-    if(strlen(input)==11){
+    if(strlen(input)==12){
         while(validadordecpf(input)==1){
+            fflush(stdin);
             printf("\nO CPF digitado nao e valido, por favor, digite novamente: ");
             fgets(input, 11, stdin);
         }
     }else if(strlen(input)==14){
         while(validadordecnpj(input)==1){
+            fflush(stdin);
             printf("\nO CNPJ digitado nao e valido, por gentileza, digite novamente: ");
             fgets(input, 14, stdin);
         }
     }else{
-        do{
-            printf("\nOs digitos que voce inseriu ultrapassam o limite do CPF e CNPJ ou sao insuficientes!\nPor favor, digite novamente: ");
+            fflush(stdin);
+            printf("\nA quantidade de digitos que voce inseriu ultrapassa o limite do CPF e CNPJ ou e insuficiente!\nPor favor, digite novamente: ");
             fgets(input,14,stdin);
             goto back;
-        }while(strlen(input)!=11 && strlen(input)!=14);
     }
 }
 
@@ -55,5 +55,12 @@ void tratamentoASCII(char *palavra){
     while(validadordeAscii(palavra)==1){
         printf("\nVoce esta inserindo caracteres invalidos neste campo.\nPor favor, digite novamente utilizando apenas simbolos do alfabeto:");
         fgets(palavra, 50, stdin);
+    }
+}
+
+void tratamentoQuantidade(int *quant, char *palavra){
+    while (quant<1 || quant>30){
+        printf("\nO numero digitado nao pode ser admitido como quantidade de %s.\nPor favor, digite novamente: ",palavra);
+        scanf("%d",&quant);
     }
 }

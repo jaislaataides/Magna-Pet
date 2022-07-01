@@ -15,7 +15,7 @@ pet *animal;
 
 //struct das informações do tutor
 struct tutor{
-    char nome[50], email[50], senha[20], pessoa[14], numero[11];
+    char nome[50], email[50], senha[20], pessoa[15], numero[11];
     int quantidade;
     pet animal;
 }dono;
@@ -23,7 +23,7 @@ struct tutor{
 
 //struct vet
 typedef struct{
-    char nome[50], especialidade[50], pessoa[14];
+    char nome[50], especialidade[50], pessoa[15];
     int experiencia;
 }veterinarios;
 
@@ -32,7 +32,7 @@ veterinarios *vet;
 
 //struct das informações da clínica
 struct{
-    char nome[50], email[50], senha[20], CNPJ[14], numero[11];
+    char nome[50], email[50], senha[20], CNPJ[15], numero[11];
     int quantidade;
     veterinarios *vet;
 }clinica;
@@ -55,7 +55,8 @@ int EscolhaPet;
 int VetorAuxiliarCodigo;
 int diasPorMes[]={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-
+//variaveis de loop
+int i,j;
 
 #include "cadastro.h"
 
@@ -148,16 +149,13 @@ void main(){
     switch (choice){
         case '1':
             dono.quantidade = Quantidade(choice);
-            ptintf("%d",dono.quantidade);
-            if(dono.quantidade==1){
-                strcpy(dono.animal.nomepet, Nome());
-                strcpy(dono.animal.especie, Especie(dono.animal.nomepet));
-                strcpy(dono.animal.raca, Raca(dono.animal.nomepet));
-                Medicacao();
-                Diagnostico();
-
-
-            }
+                for(i=0; i<dono.quantidade; i++){
+                    strcpy(animal[i].nomepet, Nome());
+                    strcpy(animal[i].especie, Especie(animal[i].nomepet));
+                    strcpy(animal[i].raca, Raca(animal[i].nomepet));
+                    Medicacao();
+                    Diagnostico();
+                }
         break;
         case '2':
 
@@ -175,8 +173,8 @@ void main(){
 
         break;
         // default:
-
     }
 
-
 }
+
+
