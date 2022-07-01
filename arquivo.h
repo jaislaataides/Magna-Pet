@@ -31,7 +31,7 @@ char *getData(){
     char *datinha = malloc(12 * sizeof(char));
     datinha = __DATE__;
     int mes, letra;
-    char *mess = malloc (2 * sizeof(char)), *data = malloc(10 *sizeof(char));
+    char *mess = malloc (sizeof(char)), *data = malloc(10 *sizeof(char));
 
 
     for(int i=0; i<12; i++){
@@ -58,6 +58,7 @@ char *getData(){
         mess[0] = ((int)mes/10) + '0';
     }
     mess[1] = mes%10 + '0';
+    mess[2] = '\0';
     printf("mes: %s\n",mess);
 
     //atribuição da data com formato modificado para a string que será retornada
@@ -75,6 +76,7 @@ char *getData(){
     data[7] = datinha[letra+5];
     data[8] = datinha[letra+6];
     data[9] = datinha[letra+7];
+    data[10] = '\0';
 
     return data;
 }

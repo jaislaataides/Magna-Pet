@@ -121,6 +121,16 @@ void Diagnostico(){
 
 
 //--------------------------------------- D A D O S  D I A R I O S -----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 //codificador: vetor de inteiro para float
 //FIXME: melhorar relação primeira posição do vetor
 float codificador(int *vetor, int exp, int pos){
