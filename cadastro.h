@@ -2,7 +2,7 @@
 #include "tratamentos.h"
 
 //-------- C A D A S T R O ----------
-//obter nome
+//obter nome do usuário ou pet
 char *Nome(){
     char *nome = malloc(50 * sizeof(char*));
     fflush(stdin);
@@ -58,16 +58,69 @@ void Confirma(char *palavra1, char *palavra3){
 //setar variavel/vetor struct
 int Quantidade(){
     int *quant = malloc(sizeof(int));
-    char *qtd = malloc(2 * sizeof(char));
+    fflush(stdin);
+    do{
     printf("\nQuantos pets deseja cadastrar? \n");
-    scanf("%c",qtd);
-    
-    free(qtd);
+    scanf("%d",&quant);
+    }while (quant<1 || quant>30);
     return quant;
 }
 
+//obter raca do pet
+char *Raca (char *nome){
+    char *raca = malloc(20 * sizeof(char));
+    fflush(stdin);
+    printf("\nQual a raca de %s?\n",nome);
+    fgets(raca, 20, stdin);
+    tratamentoASCII(raca);
+    return raca;
+}
 
+//obter especie do pet
+char Especie(char *nome){
+    char *especie = malloc(20 * sizeof(char));
+    fflush(stdin);
+    printf("\nQual a especie de %s? ", nome);
+    fgets(especie, 20, stdin);
+    tratamentoASCII(especie);
+    return especie;
+}
 
+//obter medicacao do pet (se houver)
+void Medicacao(){
+    // char *medicacao = malloc(40 * sizeof(char));
+    int qtd;
+    //char *auxiliar;
+    fflush(stdin);
+    printf("\n%s faz uso de alguma medicacao? Digite 0 caso nao ou a quantidade de medicamentos: ",dono.animal.nomepet);
+    scanf("%d",&qtd);
+    dono.animal.medicacao = malloc(qtd * sizeof(char*));
+    for (int i=0; i<qtd; i++){
+        dono.animal.medicacao[i] = malloc(40 * sizeof(char));
+        fflush(stdin);
+        printf("\nDigite o nome do %d medicamento: ",i+1);
+        fgets(dono.animal.medicacao[i], 40, stdin);
+    }  
+} 
+
+//obter diagnostico
+void Diagnostico(){
+    int qtd;
+    fflush(stdin);
+    printf("\n%s tem alguma doenca cronica, disfuncao ou outro diagnostico?\nDigite 0 caso nao ou a quantidade de diagnosticos: ");
+    scanf("%d",&qtd);
+    dono.animal.diagnostico = malloc(qtd * sizeof(char*));
+    for(int i=0; i<qtd; i++){
+        dono.animal.diagnostico[i] = malloc(40 * sizeof(char));;
+        fflush(stdin);
+        printf("\nDigite o nome do problema: ");
+        fgets(dono.animal.diagnostico[i], 40, stdin);
+    }
+}
+
+//--------------------------------------- D A D O S  D I A R I O S -----------------------------------------------------------------------------
+//codificador: vetor de inteiro para float
+//FIXME: melhorar relação primeira posição do vetor
 float codificador(int *vetor, int exp, int pos){
     if(exp==0){
         return vetor[pos];
@@ -75,4 +128,4 @@ float codificador(int *vetor, int exp, int pos){
     return (pow(10, exp)*vetor[pos])+codificador(vetor, exp-1, pos+1);
 }
 
-// float decodificador(float)
+//TODO:float decodificador(float)

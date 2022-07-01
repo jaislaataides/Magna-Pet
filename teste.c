@@ -6,5 +6,8 @@
 #include "a.h"
 
 void main(){
-    Print();
+    while(loja[k].produto[k]!=NULL){
+        ...
+        k++;
+    }
 }
