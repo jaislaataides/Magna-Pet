@@ -1,7 +1,8 @@
 #include <string.h>
 #include "tratamentos.h"
 
-//-------- C A D A S T R O ----------
+//-------------------------------------- C A D A S T R O --------------------------------------------------------------
+
 //obter nome do usuário ou pet
 char *Nome(){
     char *nome = malloc(50 * sizeof(char*));
@@ -115,6 +116,9 @@ void Diagnostico(){
         fgets(animal[i].diagnostico[i], 40, stdin);
     }
 }
+
+//-----------------------------------------------------------------------------------------
+
 
 //--------------------------------------- D A D O S  D I A R I O S -----------------------------------------------------------------------------
 //codificador: vetor de inteiro para float

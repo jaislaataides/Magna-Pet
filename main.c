@@ -40,15 +40,15 @@ struct{
 
 //------  VARIÁVEIS DE CONTROLE  --------
 //vetores de informações diárias
-const char *humor[5]={{"calmo"},{"cabisbaixo"},{"animado"},{"irritado"},{"choramingando"}};
-const char *alimentacao[5]={{"nao comeu"},{"comeu normalmente"},{"comeu algo diferente"},{"ração nova"},{"comida de humano"}};
-const char *medicacaododia[3]={{"não"},{"de rotina"},{"outra medicação"}};
-const char *urina[4]={{"cor típica e líquida"},{"cor alaranjada"},{"cor avermelhada"},{"cor amarronzada"}};
-const char *fezes[10]={{"normal"},{"preta"},{"branca"},{"cinza"},{"verde"},{"com verme"},{"com giárdia"},{"com muco amarelo"},{"com sangue"}};
+const char *humor[6]={{" "},{"calmo"},{"cabisbaixo"},{"animado"},{"irritado"},{"choramingando"}};
+const char *alimentacao[6]={{" "},{"nao comeu"},{"comeu normalmente"},{"comeu algo diferente"},{"ração nova"},{"comida de humano"}};
+const char *medicacaododia[4]={{" "},{"não"},{"de rotina"},{"outra medicação"}};
+const char *urina[5]={{" "},{"cor típica e líquida"},{"cor alaranjada"},{"cor avermelhada"},{"cor amarronzada"}};
+const char *fezes[10]={{" "},{"normal"},{"preta"},{"branca"},{"cinza"},{"verde"},{"com verme"},{"com giárdia"},{"com muco amarelo"},{"com sangue"}};
 
 //variáveis de dados diários
 int data[3];
-//TODO: escolher um nomes melhores para char *medicacaoderotina, *medicacaododia; ou substituir;
+//TODO: escolher nomes melhores para char *medicacaoderotina, *medicacaododia; ou substituir;
 int EscolhaPet;
 
 //vetores auxiliares
@@ -59,6 +59,7 @@ int diasPorMes[]={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 int i,j;
 
 #include "cadastro.h"
+#include "arquivo.h"
 
 
 
@@ -95,9 +96,9 @@ void main(){
             printf("\n\t\t1- tutor\n\tdescricao: pai ou mae de pet que quer ter um monitoramento dos seus bichinhos acurado.");
             printf("\n\n\t\t2- clinica veterinaria\n\tdescricao: representante do consulturio que deseja conhecer a \n\trotina dos animais fora do ambiente medico e ter uma comunicacao melhor com seus tutores\n\n");
             printf("\n\n\t\t0- sair");
-            scanf("%c",&choice);
+            scanf("%c",&tipodeusuario);
             system("cls");
-                switch(choice){
+                switch(tipodeusuario){
                     case '1':
 
                         strcpy(dono.nome, Nome());
@@ -131,10 +132,12 @@ void main(){
                     // default:
                     //     printf("\nO caractere que voce inseriu nao e valido para nenhuma opcao.\nDigite novamente ou pressione 0 para sair\n");
                     //     goto usertype;
+                    //break;
                 }
         break;
     
         case '2':
+            //TODO: criar função de busca
 
         break;
 
@@ -142,49 +145,109 @@ void main(){
             exit(0);
 
         //default:
+        //break;
     }
+
     fflush(stdin);
-    //FIXME: FELIPE menuPrincipalTutor:
-    printf("\tMENU PRINCIPAL");
+    if (tipodeusuario=='1'){
 
-    //sair ou fazer logout???????
+        //FIXME: FELIPE menuPrincipalTutor:
+        menuPrincipalTutor:
+        printf("\tMENU PRINCIPAL");
 
-    printf("\n1- cadastrar pets\n2-informações do(s) pet(s)\n3-vacinas\n4-diario pet\n5-clinica\n0- sair\n\n");
-    scanf("%c",&choice);
-    switch (choice){
-        case '1':
-            dono.quantidade = Quantidade(choice);
-                for(i=0; i<dono.quantidade; i++){
-                    strcpy(animal[i].nomepet, Nome());
-                    strcpy(animal[i].especie, Especie(animal[i].nomepet));
-                    strcpy(animal[i].raca, Raca(animal[i].nomepet));
-                    Medicacao();
-                    Diagnostico();
+        //sair ou fazer logout???????
+
+        printf("\n1- cadastrar pets\n2-informações do(s) pet(s)\n3-vacinas\n4-diario pet\n5-clinica\n0- sair\n\n");
+        scanf("%c",&choice);
+        switch (choice){
+            case '1':
+                dono.quantidade = Quantidade(choice);
+                    for(i=0; i<dono.quantidade; i++){
+                        strcpy(animal[i].nomepet, Nome());
+                        strcpy(animal[i].especie, Especie(animal[i].nomepet));
+                        strcpy(animal[i].raca, Raca(animal[i].nomepet));
+                        Medicacao();
+                        Diagnostico();
+                    }
+                    //limpa
+                    //colocar em arquivo
+                    printf("\n\nCadastro realizado com sucesso!");
+
+            break;
+            case '2':
+                //TODO: FELIPE MENU CARTILHA
+                printf("MENU CARTILHA\n1-visualizar informacoes\n2-editar informacoes\n3- voltar\n0- sair");
+                scanf("%c",&choice);
+                switch(choice){
+                    case '1':
+
+                    break;
+
+                    case '2':
+                        
+                    break;
+
+                    case '3':
+
+                    break;
+
+                    case '0':
+
+                    break;
+                    
+                    // default:
+                    
+                    // break;
                 }
-        break;
-        case '2':
-            //TODO: FELIPE MENU CARTILHA
 
-        break;
-        case '3':
-            //TODO: FELIPE ÁREA DE VACINAS
+            break;
+            case '3':
+                //TODO: FELIPE ÁREA DE VACINAS
+                printf("MENU VACINAS\n1- 'sincronizar' cartao de vacina\n2- ver cartao de vacinas\n3- receber lembrete vacinal\n4- voltar\n0-sair");
+                scanf("%c",choice);
+                switch(choice){
+                    case '1':
 
-        break;
-        case '4':
-            //TODO: FELIPE MENU DIARIO
+                    break;
+                    
+                    case '2':
+                    
+                    break;
+                    
+                    case '3':
+                    
+                    break;
 
-        break;
-        case '5':
-            //TODO: FELIPE MENU CLINICA
+                    case '4':
 
-        break;
-        case '0':
-            exit(0);
+                    break;
 
-        break;
-        // default:
+                    case '0':
+
+                    break;
+
+                    // default: 
+                    // break:
+                }
+
+            break;
+            case '4':
+                //TODO: FELIPE MENU DIARIO
+                printf("MENU DIARIO\n\tcadastre as informacoes do(s) seu(s) bichinhos diariamente!\nVoce deseja:\n");
+                printf("\n1- inserir informações\n-");
+
+            break;
+            case '5':
+                //TODO: FELIPE MENU CLINICA
+
+            break;
+            case '0':
+                exit(0);
+
+            break;
+            // default:
+        }
     }
-
 }
 
 
