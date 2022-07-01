@@ -88,9 +88,7 @@ char Especie(char *nome){
 
 //obter medicacao do pet (se houver)
 void Medicacao(){
-    // char *medicacao = malloc(40 * sizeof(char));
     int qtd;
-    //char *auxiliar;
     fflush(stdin);
     printf("\n%s faz uso de alguma medicacao? Digite 0 caso nao ou a quantidade de medicamentos: ",dono.animal.nomepet);
     scanf("%d",&qtd);

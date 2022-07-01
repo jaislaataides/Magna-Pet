@@ -63,14 +63,14 @@ int i,j;
 
 
 void main(){
-    //EXEMPLO DE APLICAÇÃO DE ALOCAÇÃO DINÂMICA
-    /*int qtd=1,user=0;
-    dono.animal=malloc(qtd * sizeof(pet));
-    for(int i=0; i<qtd; i++){
-        strcpy(dono.animal[i].nomepet,"zezinho");
-        printf("%s\n\n",dono.animal[i].nomepet);
-    }
-    */
+    // //EXEMPLO DE APLICAÇÃO DE ALOCAÇÃO DINÂMICA
+    // /*int qtd=1,user=0;
+    // dono.animal=malloc(qtd * sizeof(pet));
+    // for(int i=0; i<qtd; i++){
+    //     strcpy(dono.animal[i].nomepet,"zezinho");
+    //     printf("%s\n\n",dono.animal[i].nomepet);
+    // }
+    // */
     char choice, tipodeusuario;
 
     menuInicial:
@@ -90,6 +90,7 @@ void main(){
         //TODO: codar função limpar + notificação
         system("cls");
             usertype:
+            //TODO: Felipe - decisão: tipo de usuário 
             printf("\n\tQual tipo de usuario e' voce?");
             printf("\n\t\t1- tutor\n\tdescricao: pai ou mae de pet que quer ter um monitoramento dos seus bichinhos acurado.");
             printf("\n\n\t\t2- clinica veterinaria\n\tdescricao: representante do consulturio que deseja conhecer a \n\trotina dos animais fora do ambiente medico e ter uma comunicacao melhor com seus tutores\n\n");
@@ -108,7 +109,7 @@ void main(){
                         printf("%s",dono.senha);
                         Confirma(dono.senha, "sua senha");
                         printf("\nCadastro realizado com sucesso!");
-                        // goto menuPrincipalTutor;
+                        //TODO: goto menuPrincipalTutor;
                         break;
 
                     case '2':
@@ -120,6 +121,7 @@ void main(){
                         printf("%s",clinica.senha);
                         Confirma(clinica.senha, "sua senha");
                         printf("\nCadastro realizado com sucesso!");
+                        //TODO: goto menuPrincipalClinica;
                         break;
 
                     case '0':
@@ -142,8 +144,11 @@ void main(){
         //default:
     }
     fflush(stdin);
-    // menuPrincipalTutor:
+    //FIXME: FELIPE menuPrincipalTutor:
     printf("\tMENU PRINCIPAL");
+
+    //sair ou fazer logout???????
+
     printf("\n1- cadastrar pets\n2-informações do(s) pet(s)\n3-vacinas\n4-diario pet\n5-clinica\n0- sair\n\n");
     scanf("%c",&choice);
     switch (choice){
@@ -158,18 +163,23 @@ void main(){
                 }
         break;
         case '2':
+            //TODO: FELIPE MENU CARTILHA
 
         break;
         case '3':
+            //TODO: FELIPE ÁREA DE VACINAS
 
         break;
         case '4':
+            //TODO: FELIPE MENU DIARIO
 
         break;
         case '5':
+            //TODO: FELIPE MENU CLINICA
 
         break;
         case '0':
+            exit(0);
 
         break;
         // default:
