@@ -1,8 +1,8 @@
-#Linha do tempo
+<h1>Linha do tempo</h1>
 <hr>
-####Versão 1 - hash
+<h4>Versão 1 - 06890bd</h4>
 
-#####Features
+<h5>Features</h5>
 <br>
 <ul>
 <li><strong>Cadastros:</strong> tutor, clinica, pets;</li>
