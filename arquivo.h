@@ -59,7 +59,6 @@ char *getData(){
     }
     mess[1] = mes%10 + '0';
     mess[2] = '\0';
-    printf("mes: %s\n",mess);
 
     //atribuição da data com formato modificado para a string que será retornada
     if(datinha[letra+1]==' '){

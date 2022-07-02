@@ -1,9 +1,8 @@
 <h1>Linha do tempo</h1>
-<hr>
 
 <h4>Versão 1 - 06890bd</h4>
 
-<br>
+<hr>
 
 <h5>Features</h5>
 
@@ -18,9 +17,9 @@
 
 <hr>
 
-<h4>Versão 2 - hash</h4>
+<h4>Versão 2 - ecaeddcae58f0c7f57d87dd84bde18c0f3a705ff</h4>
 
-<br>
+<hr>
 
 <h5>Alterações</h5>
 
@@ -33,6 +32,18 @@
 
 <hr>
 
+<h4>Versão 3 - hash</h4>
+
+<hr>
+
+<h5>Features</h5>
+
+<ul>
+<li><strong>Menus:</strong>padronização de menus;</li>
+<li><strong>Feature</strong> de obtenção de dados diários do animal;</li>
+</ul>
+
+<hr>
 
 
 

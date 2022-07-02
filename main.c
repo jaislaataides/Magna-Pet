@@ -2,10 +2,12 @@
 #include <string.h>
 
 //-------  INFORMAÇÕES DE CADASTRO ---------
+
 //struct das informações dos pets
 typedef struct{
     char nomepet[50], especie[20], raca[20], **medicacao, **diagnostico;
     int idade, comprimento;
+    char sexo;
     //sistema matricial de meses gerados a partir da quantidade de pets
     float diario[12][31];
 }pet;
@@ -21,7 +23,7 @@ struct tutor{
 }dono;
 
 
-//struct vet
+//struct  das informações do veterinario
 typedef struct{
     char nome[50], especialidade[50], pessoa[15];
     int experiencia;
@@ -30,11 +32,20 @@ typedef struct{
 //variável ou vetor do tipo struct veterinarios
 veterinarios *vet;
 
+typedef struct{
+    char nome[50], codigo[20];
+    int estoque;
+    float preco;
+}vendas;
+
+vendas *produto;
+
 //struct das informações da clínica
 struct{
     char nome[50], email[50], senha[20], CNPJ[15], numero[11];
     int quantidade;
-    veterinarios *vet;
+    veterinarios vet;
+    vendas produto;
 }clinica;
 
 
@@ -47,12 +58,12 @@ const char *urina[5]={{" "},{"cor típica e líquida"},{"cor alaranjada"},{"cor 
 const char *fezes[10]={{" "},{"normal"},{"preta"},{"branca"},{"cinza"},{"verde"},{"com verme"},{"com giárdia"},{"com muco amarelo"},{"com sangue"}};
 
 //variáveis de dados diários
-int data[3];
 //TODO: escolher nomes melhores para char *medicacaoderotina, *medicacaododia; ou substituir;
+char data[10];
 int EscolhaPet;
 
 //vetores auxiliares
-int VetorAuxiliarCodigo;
+int VetorAuxiliarCodigo[7];
 int diasPorMes[]={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 //variaveis de loop
@@ -60,10 +71,10 @@ int i,j;
 
 #include "cadastro.h"
 #include "arquivo.h"
+#include "exibicao.h"
 
 
-
-void main(){
+int main(){
     // //EXEMPLO DE APLICAÇÃO DE ALOCAÇÃO DINÂMICA
     // /*int qtd=1,user=0;
     // dono.animal=malloc(qtd * sizeof(pet));
@@ -72,30 +83,43 @@ void main(){
     //     printf("%s\n\n",dono.animal[i].nomepet);
     // }
     // */
+
+    strcpy(data, getData());
+
     char choice, tipodeusuario;
 
     menuInicial:
-    printf(" ________________________________________________________\n");
-    printf("|                 M E N U     I N I C I A L              |\n");
-    printf("|                                                        |\n");
-    printf("|                   1 - fazer cadastro                   |\n");
-    printf("|                   2 - fazer login                      |\n");
-    printf("|                   0 - sair                             |\n");
-    printf("|________________________________________________________|\n\n\n");
-
-    printf("Escolha: ");
+    MenuInicio();
+    printf("\n\n        escolha: ");
+    fflush(stdin);
     scanf("%c",&choice);
+
     fflush(stdin);
     switch(choice){
         case '1':
         //TODO: codar função limpar + notificação
         system("cls");
             usertype:
-            //TODO: Felipe - decisão: tipo de usuário 
-            printf("\n\tQual tipo de usuario e' voce?");
-            printf("\n\t\t1- tutor\n\tdescricao: pai ou mae de pet que quer ter um monitoramento dos seus bichinhos acurado.");
-            printf("\n\n\t\t2- clinica veterinaria\n\tdescricao: representante do consulturio que deseja conhecer a \n\trotina dos animais fora do ambiente medico e ter uma comunicacao melhor com seus tutores\n\n");
-            printf("\n\n\t\t0- sair");
+            criaMenuLinhaSuperior(STRTAM, "     ");
+            criaMenuItem(STRTAM, "  ");
+            criaMenuItem(STRTAM, "                Qual tipo de usuario e voce? ");
+            criaMenuItem(STRTAM, " ");
+            criaMenuItem(STRTAM, " ");
+            criaMenuItem(STRTAM, "                         1- tutor");  
+            criaMenuItem(STRTAM, "        descricao: pai ou mae de pet que quer ter  ");  
+            criaMenuItem(STRTAM, "       um monitoramento dos seus bichinhos acurado");
+            criaMenuItem(STRTAM, " ");
+            criaMenuItem(STRTAM, "                   2- clinica veterinaria");  
+            criaMenuItem(STRTAM, "         descricao: profissional da clinica que deseja ");
+            criaMenuItem(STRTAM, "         conhecer a rotina dos animais fora do ambiente");
+            criaMenuItem(STRTAM, "      medico e ter uma comunicacao m1elhor com seus tutores");
+            criaMenuItem(STRTAM, " ");
+            criaMenuItem(STRTAM, "                 3 - voltar ao ultimo menu");
+            criaMenuItem(STRTAM, " ");
+            criaMenuItem(STRTAM, "                          0 - sair");
+            criaMenuItem(STRTAM, " ");
+            criaMenuLinhaRodape(STRTAM);
+            printf("\n\n        escolha: ");
             scanf("%c",&tipodeusuario);
             system("cls");
                 switch(tipodeusuario){
@@ -109,8 +133,8 @@ void main(){
                         strcpy(dono.senha, Senha());
                         printf("%s",dono.senha);
                         Confirma(dono.senha, "sua senha");
-                        printf("\nCadastro realizado com sucesso!");
-                        //TODO: goto menuPrincipalTutor;
+                        cadastroRealizado();
+                        //TODO: fprintf
                         break;
 
                     case '2':
@@ -121,133 +145,334 @@ void main(){
                         strcpy(clinica.senha, Senha());
                         printf("%s",clinica.senha);
                         Confirma(clinica.senha, "sua senha");
-                        printf("\nCadastro realizado com sucesso!");
-                        //TODO: goto menuPrincipalClinica;
+                        cadastroRealizado();
+                        //TODO: fprintf
                         break;
 
-                    case '0':
+                    case '3':
                         goto menuInicial;
 
-                    //FIXME: erro default
-                    // default:
-                    //     printf("\nO caractere que voce inseriu nao e valido para nenhuma opcao.\nDigite novamente ou pressione 0 para sair\n");
-                    //     goto usertype;
-                    //break;
+                    case '0':
+                        sair();
+
+                    default:
+                        opcaoInvalida();
+                        goto usertype;
+                    break;
                 }
         break;
     
         case '2':
-            //TODO: criar função de busca
+            //TODO: criar função de busca em binario
 
         break;
 
         case '0':
-            exit(0);
+            sair();
 
-        //default:
-        //break;
+        default:
+            opcaoInvalida();
+            goto menuInicial;
+        break;
     }
 
     fflush(stdin);
     if (tipodeusuario=='1'){
 
-        //FIXME: FELIPE menuPrincipalTutor:
         menuPrincipalTutor:
-        printf("\tMENU PRINCIPAL");
-
-        //sair ou fazer logout???????
-
-        printf("\n1- cadastrar pets\n2-informações do(s) pet(s)\n3-vacinas\n4-diario pet\n5-clinica\n0- sair\n\n");
+        Menu_Tutor();
         scanf("%c",&choice);
+
         switch (choice){
-            case '1':
+            //cadastrar pet
+            case '1'://-----------------------------------------------------------------------
+
                 dono.quantidade = Quantidade(choice);
-                    for(i=0; i<dono.quantidade; i++){
-                        strcpy(animal[i].nomepet, Nome());
-                        strcpy(animal[i].especie, Especie(animal[i].nomepet));
-                        strcpy(animal[i].raca, Raca(animal[i].nomepet));
-                        Medicacao();
-                        Diagnostico();
-                    }
-                    //limpa
-                    //colocar em arquivo
-                    printf("\n\nCadastro realizado com sucesso!");
-
-            break;
-            case '2':
-                //TODO: FELIPE MENU CARTILHA
-                printf("MENU CARTILHA\n1-visualizar informacoes\n2-editar informacoes\n3- voltar\n0- sair");
-                scanf("%c",&choice);
-                switch(choice){
-                    case '1':
-
-                    break;
-
-                    case '2':
-                        
-                    break;
-
-                    case '3':
-
-                    break;
-
-                    case '0':
-
-                    break;
-                    
-                    // default:
-                    
-                    // break;
+                for(i=0; i<dono.quantidade; i++){
+                    strcpy(animal[i].nomepet, Nome());
+                    strcpy(animal[i].especie, Especie(animal[i].nomepet));
+                    strcpy(animal[i].raca, Raca(animal[i].nomepet));
+                    Medicacao();
+                    Diagnostico();
                 }
+                //função limpa
+                //colocar em arquivo
+                cadastroRealizado();
+                break;
 
+            case '2'://-----------------------------------------------------------------------
+
+                menuCartilhaTutor:
+                Menu_Cartilha_Tutor();
+                scanf("%c",&choice);
+
+                    switch(choice){
+
+                        case '1':
+                            //TODO: EDITAR INFO
+                        break;
+
+                        case '2':
+                            //TODO: VISUALIZAR INFO
+                        break;
+
+                        case '3':
+                            //TODO: GOTO MENU PRINCIPAL
+                        break;
+
+                        case '0':
+                            sair();
+
+                        default:
+                        opcaoInvalida();
+                        //TODO: GOTO
+                    }
             break;
-            case '3':
-                //TODO: FELIPE ÁREA DE VACINAS
-                printf("MENU VACINAS\n1- 'sincronizar' cartao de vacina\n2- ver cartao de vacinas\n3- receber lembrete vacinal\n4- voltar\n0-sair");
-                scanf("%c",choice);
-                switch(choice){
-                    case '1':
 
+            case '3'://-----------------------------------------------------------------------
+            //TODO: CARTÃO DE VACINAS
+            menuVacinas:
+            Menu_Vacinas_Tutor();
+            scanf("%c",choice);
+    
+                switch(choice){
+    
+                    case '1':
+                        //TODO: PERMITIR/INSERIR NOTIFICAÇÃO
                     break;
                     
                     case '2':
-                    
+                        //TODO: VISUALIZAR VACINAS
                     break;
                     
                     case '3':
-                    
+                        //TODO: INSERIR VACINA 1  VEZ
                     break;
 
                     case '4':
-
+                        //TODO: GOTO MENU PRINCIPAL
                     break;
 
                     case '0':
+                        sair();
 
-                    break;
-
-                    // default: 
-                    // break:
+                    default: 
+                        opcaoInvalida();
+                        //TODO: GOTO
                 }
 
             break;
-            case '4':
-                //TODO: FELIPE MENU DIARIO
-                printf("MENU DIARIO\n\tcadastre as informacoes do(s) seu(s) bichinhos diariamente!\nVoce deseja:\n");
-                printf("\n1- inserir informações\n-");
 
-            break;
+            case '4'://-----------------------------------------------------------------------
+            Menu_Pet_Tutor();
+            scanf("%c",choice);
+                
+                switch(choice){
+                    case '1':
+                        VetorAuxiliarCodigo[0] = obterHumor();
+                        VetorAuxiliarCodigo[1] = obterAlimentacao();
+                        VetorAuxiliarCodigo[2] = obterMedicacao();
+                        VetorAuxiliarCodigo[3] = obterUrina();
+                        VetorAuxiliarCodigo[4] = obterFezes();
+                        VetorAuxiliarCodigo[5] = obterIrregularidades();
+                        //TODO: FINALIZAR
+                    break;
+                
+                    case '2':
+                        //TODO: editar
+                    break;
+
+                    case '3':
+                        //TODO: desenvolver buscador
+                    break;
+                    
+                    case '4':
+                        //TODO: GOTO
+                    break;
+                    
+                    case '0':
+                    sair();
+                    break;
+                    
+                    default:
+                    opcaoInvalida();
+                    //TODO: GOTO
+                    break;
+                }
+
             case '5':
-                //TODO: FELIPE MENU CLINICA
+            menuTutorClinica:
+            Menu_Clinica_Tutor();
+            scanf("%c",&choice);
+            switch(choice){
+                case '1':
+                    //TODO: VISUALIZAR ITENS
+                break;
+
+                case '2':
+                    //TODO: CONTATAR CLINICA
+                break;
+
+                case '3':
+                    //TODO: AGENDAR CONSULTA
+                break;
+                
+                case '4':
+                    //TODO: GOTO MENU PRINCIPAL
+                break;
+
+                case '0':
+                    sair();
+                
+                default:
+                opcaoInvalida();
+                //TODO: GOTO MENU PRINCIPAL
+            }
 
             break;
+
             case '0':
-                exit(0);
+                sair();
 
+            default:
+                opcaoInvalida();
+                //TODO: GOTO
             break;
-            // default:
-        }
+        }    
+    }else{
+        menuPrincipalClinica:
+        Menu_Clinica();
+        scanf("%c",choice);
+
+            switch(choice){
+
+                case '1':
+                menuProdutosClinica:
+                Menu_Produtos_Clinica();
+                    scanf("%c",choice);
+
+                    switch(choice){
+                        case '1':
+                            //TODO: CADASTRO DE PRODUTOS
+                        break;
+
+                        case '2':
+                            //TODO: EDIÇÃO DE PRODUTOS
+                        break;
+
+                        case '3':
+                            //TODO: VISUALIZAR PRODUTOS
+                        break;
+
+                        case '4':
+                            //TODO:GOTO MENU PRINCIPAL
+                        break;
+
+                        case '0':
+                        sair();
+                        break;
+
+                        default:
+                            opcaoInvalida();
+                            //TODO: GOTO
+                        break;
+                    }
+                break;
+
+                case '2':
+                    menuVacinasClinica:
+                    Menu_Vacinas_Clinica();
+                    scanf("%c",choice);
+                    switch(choice){
+                        case '1':
+                            //TODO: INSERIR VACINAS
+                        break;
+
+                        case '2':
+                            //TODO: EDITAR VACINAS
+                        break;
+
+                        case '3':
+                            //TODO: INSERIR AVISOS
+                        break;
+
+                        case '4':
+                            //TODO: VOLTAR AO MENU PRINCIPAL
+                        break;
+
+                        case '0':
+                        sair();
+
+                        default:
+                        opcaoInvalida();
+                        //TODO: GOTO MENU PRINCIPAL
+                    }
+                break;
+
+                case '3':
+                meuDiarioPetClinica:
+                Menu_Pet_Clinica();
+                scanf("%c",&choice);
+                
+                switch(choice){
+                    case '1':
+                        //TODO: ADD BUSCADOR POR DATA
+                    break;
+
+                    case '2':
+                        //TODO: ADD BUSCADOR POR TIPO
+                    break;
+                    
+                    case '3':
+                        //TODO: VOLTAR AO MENU PRINCIPAL
+                    break;
+
+                    case '0':
+                        sair();
+
+                    default:
+                        opcaoInvalida();
+                        //TODO: ADD GOTO
+                }
+                break;
+
+                case '4':
+                menuContatoClinica:
+                Menu_Contato_Clinica();
+                scanf("%c",&choice);
+                switch(choice){
+                    case '1':
+                        //  TODO: MENU INFO
+                    break;
+
+                    case '2':
+                        //TODO: SISTEMA DE PLANTÃO
+                    break;
+
+                    case '3':
+                        //TODO: GOTO MENU PRINCIPAL
+                    break;
+
+                    case '0':
+                    sair();
+                    break;
+
+                    default:
+                    opcaoInvalida();
+                    //TODO: GOTO MENU PRINCIPAL;
+                }
+                break;
+
+                case '0':
+                    sair();
+
+                default:
+                    opcaoInvalida();
+                    //TODO: GOTO MENU PRINCIPAL
+                
+            }
+
     }
+
+return 0;
 }
-
-
