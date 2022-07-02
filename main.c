@@ -3,17 +3,22 @@
 
 //-------  INFORMAÇÕES DE CADASTRO ---------
 
+typedef struct{
+    char data[10];
+    float diario[12][31];
+}diario;
+
 //struct das informações dos pets
 typedef struct{
     char nomepet[50], especie[20], raca[20], **medicacao, **diagnostico;
-    int idade, comprimento;
+    int idade, comprimento, id;
     char sexo;
     //sistema matricial de meses gerados a partir da quantidade de pets
-    float diario[12][31];
+    diario dados;
 }pet;
 
 //variável ou vetor do tipo struct pet
-pet *animal;
+pet animal[2];
 
 //struct das informações do tutor
 struct tutor{
@@ -69,10 +74,32 @@ int diasPorMes[]={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 //variaveis de loop
 int i,j;
 
-#include "cadastro.h"
-#include "arquivo.h"
+#include "obtencaodedados.h"
 #include "exibicao.h"
+#include "arquivo.h"
 
+int calculoDia(char *a){
+    int dia;
+    dia = a[0] - '0';
+    dia = (int)dia/10;
+    dia+= a[1] - '0';
+    return dia;
+}
+
+int calculoMes(char *a){
+    int mes;
+    if(strlen(a)>2){
+        mes = a[3] - '0';
+        mes = (int)mes/10;
+        mes+= a[4] - '0';
+    }else{
+        mes = a[0] - '0';
+        mes = (int)mes/10;
+        mes+= a[1] - '0';
+    }
+
+    return mes;
+}
 
 int main(){
     // //EXEMPLO DE APLICAÇÃO DE ALOCAÇÃO DINÂMICA
@@ -86,7 +113,11 @@ int main(){
 
     strcpy(data, getData());
 
-    char choice, tipodeusuario;
+    int dia = calculoDia(data), mes = calculoMes(data);
+
+    char choice, tipodeusuario, dd, mm;
+
+    animal[0].id = gerarID();
 
     menuInicial:
     MenuInicio();
@@ -187,6 +218,7 @@ int main(){
             //cadastrar pet
             case '1'://-----------------------------------------------------------------------
 
+                animal[0].id = 1;
                 dono.quantidade = Quantidade(choice);
                 for(i=0; i<dono.quantidade; i++){
                     strcpy(animal[i].nomepet, Nome());
@@ -194,6 +226,7 @@ int main(){
                     strcpy(animal[i].raca, Raca(animal[i].nomepet));
                     Medicacao();
                     Diagnostico();
+                    animal[i].id = gerarID();
                 }
                 //função limpa
                 //colocar em arquivo
@@ -275,6 +308,37 @@ int main(){
                         VetorAuxiliarCodigo[3] = obterUrina();
                         VetorAuxiliarCodigo[4] = obterFezes();
                         VetorAuxiliarCodigo[5] = obterIrregularidades();
+                        //limpa
+                        system("cls");
+                        salvarDiario:
+                        criaMenuLinhaSuperior();
+                        criaMenuItem(STRTAM, "      Deseja salvar os dados na data de hoje?");
+                        criaMenuItem(STRTAM, "                  1 - Sim");
+                        criaMenuItem(STRTAM, "                  2 - Nao");
+                        criaMenuLinhaRodape(STRTAM);
+                        fflush(stdin);
+                        printf("\n\n            escolha:");
+                        scanf("%c",&choice);
+                        if(choice == '1'){
+                            animal[i].dados.diario[mes][dia] = codificador(VetorAuxiliarCodigo, 5, 0);
+                            // armazenarDiario();
+                        }else if(choice == 2){
+                            criaForm();
+                            printf("    Escreva o dia em que os dados serao salvos: ");
+                            fgets(dd, 2, stdin);
+                            dia = calculoDia(dd);
+                            criaLinhaForm();
+                            printf("    Agora escreva o mes: ");
+                            fgets(mm, 2, stdin);
+                            mes = calculoMes(mm);
+                            animal[i].dados.diario[mes][dia] = codificador(VetorAuxiliarCodigo, 5, 0);
+
+
+                            //TODO: pegar string e armazenar diario
+                        }else{
+                            opcaoInvalida();
+                            goto salvarDiario;
+                        }
                         //TODO: FINALIZAR
                     break;
                 

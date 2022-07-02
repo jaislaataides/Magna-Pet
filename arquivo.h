@@ -1,7 +1,51 @@
 #include <string.h>
 
 // ------------------------------------------- A R Q U I V O S ----------------------------------------------------------
-//TODO:função geradora de arquivo
+FILE *dadosDiarios;
+FILE *ultId;
+//TODO:
+FILE *dadosTutor;//bin
+FILE *dadosClinica;//bin
+FILE *notificacao;//txt?
+FILE *loja;//bin
+
+int  gerarID(){
+    int ID;
+
+        fseek(ultId, 0, SEEK_END);
+        int size = ftell(ultId);
+        fclose(ultId);
+
+        if(size == 0){
+            ultId = fopen("UltimaID.txt", "w");
+            fprintf(ultId, 1);
+            fclose(ultId);
+        }else{
+        ultId = fopen("UltimaID.txt", "r");
+        fscanf(ultId, "%d", &ID);
+        printf("\n%d",ID);
+        ID++;
+        printf("\n%d",ID);
+        fclose(ultId);
+        ultId = fopen("UltimaID.txt","w");
+        fprintf(ultId, "%d",ID);
+        fclose(ultId);
+        }
+    return ID;
+}
+
+void armazenarDiario(int i, char *data, float codigo){
+    char arquivo[8];
+
+    sprintf(arquivo, "%d.txt", animal[i].id);
+    dadosDiarios = fopen(arquivo,"a");
+    fprintf(dadosDiarios, "#%s$%.0f\n");
+    fclose(dadosDiarios);
+}
+
+void salvar(){
+
+}
 
 
 //--------------------------------- M A N I P U L A Ç Ã O   D E   D A T A   ----------------------------------------------

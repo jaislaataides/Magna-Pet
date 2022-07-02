@@ -17,7 +17,7 @@
 
 <hr>
 
-<h4>Versão 2 - ecaeddcae58f0c7f57d87dd84bde18c0f3a705ff</h4>
+<h4>Versão 2 - ecaeddc</h4>
 
 <hr>
 
@@ -32,22 +32,31 @@
 
 <hr>
 
-<h4>Versão 3 - hash</h4>
+<h4>Versão 3 - 734275b</h4>
 
 <hr>
 
 <h5>Features</h5>
 
 <ul>
-<li><strong>Menus:</strong>padronização de menus;</li>
+<li><strong>Menus:</strong> padronização de menus;</li>
 <li><strong>Feature</strong> de obtenção de dados diários do animal;</li>
 </ul>
 
 <hr>
 
+<h4>Versão 4 - hash</h4>
 
+<hr>
 
+<h5>Features</h5>
 
+<ul>
+<li><strong>Feature</strong> de geração de ID dos pets;</li>
+<li><strong>Feature</strong> de armazenamento dos dados diários em arquivo externo personalizado.</li>
+</ul>
+
+<hr>
 
 
 

@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "validacoes.h": "c"
+        "validacoes.h": "c",
+        "arquivo.h": "c"
     }
 }

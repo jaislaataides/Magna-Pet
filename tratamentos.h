@@ -1,5 +1,4 @@
 #include "validacoes.h"
-#include "menus.h"
 
 //tratamento email
 void tratamentoEmail(char *email){
@@ -45,7 +44,9 @@ void tratamentoCPFCNPJ(char *input){
 void tratamentoSenha(char *senha){
     while(strlen(senha)<6 || strlen(senha)>10){
         criaLinhaForm();
-        printf("A senha inserida e muito curta ou longa demais.\nTente outra, por favor: ");
+        printf("A senha inserida e muito curta ou longa demais.");
+        criaLinhaForm();
+        printf("Tente outra, por favor: ");
         fgets(senha,10,stdin);
     }
 }
@@ -63,7 +64,9 @@ void tratamentoConfirmacao(char *palavra1, char *palavra2, char *palavra3){
 void tratamentoASCII(char *palavra){
     while(validadordeAscii(palavra)==1){
         criaLinhaForm();
-        printf("Voce esta inserindo caracteres invalidos neste campo.\nPor favor, digite novamente utilizando apenas simbolos do alfabeto:");
+        printf("Voce esta inserindo caracteres invalidos neste campo.");
+        criaLinhaForm();
+        printf("Por favor, digite novamente utilizando apenas simbolos do alfabeto:");
         fgets(palavra, 50, stdin);
     }
 }
@@ -71,12 +74,13 @@ void tratamentoASCII(char *palavra){
 void tratamentoQuantidade(int *quant, char *palavra){
     while (quant<1 || quant>30){
         criaLinhaForm();
-        printf("O numero digitado nao pode ser admitido como quantidade de %s.\nPor favor, digite novamente: ",palavra);
+        printf("O numero digitado nao pode ser admitido como quantidade de %s.",palavra);
+        printf("Por favor, digite novamente: ");
         scanf("%d",&quant);
     }
 }
 
-int tratamenoObterDadosDiarios(int aux, int op1, int op2){
+int tratamentoObterDadosDiarios(int aux, int op1, int op2){
     char escolha;
     printf("\n\n");
 

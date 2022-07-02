@@ -1,5 +1,9 @@
 #include <string.h>
+#include <math.h>
+#include "menus.h"
 #include "tratamentos.h"
+
+
 
     char choice;
     int aux;
@@ -13,6 +17,7 @@ char *Nome(){
     criaForm();
     printf("Digite o nome: ");
     fgets(nome, 50, stdin);
+
     tratamentoASCII(nome);
     return nome;
 }
@@ -20,7 +25,7 @@ char *Nome(){
 //obter CPF ou CNPJ do usuário
 char *CPF(){
     char *input = malloc(14*sizeof(char*));
-    criaForm();
+    criaLinhaForm();
     printf("Digite seu CPF ou CNPJ: ");
     fgets(input, 15, stdin);
     tratamentoCPFCNPJ(input);
@@ -30,7 +35,7 @@ char *CPF(){
 //obter email do usuário
 char *Email(){
     char *email = malloc(20 * sizeof(char*));
-    criaForm();
+    criaLinhaForm();
     printf("Digite o email: ");
     fgets(email, 30, stdin);
     tratamentoEmail(email);
@@ -40,7 +45,7 @@ char *Email(){
 //obter senha do usuário
 char *Senha(){
     char *senha = malloc(10 * sizeof(char*));
-    criaForm();
+    criaLinhaForm();
     printf("Digite sua senha (6 - 10 digitos): ");
     fgets(senha, 10, stdin);
     fflush(stdin);
@@ -50,7 +55,7 @@ char *Senha(){
 //confirmar digitação de email e senha
 void Confirma(char *palavra1, char *palavra3){
     char *palavra2 = malloc(20 * sizeof(char));
-    criaForm();
+    criaLinhaForm();
     printf("Confirme %s: ",palavra1);
     fgets(palavra2, 30, stdin);
     fflush(stdin);
@@ -63,7 +68,7 @@ void Confirma(char *palavra1, char *palavra3){
 //setar vetor struct
 int Quantidade(char *palavra){
     int *quant = malloc(sizeof(int));
-    criaForm();
+    criaLinhaForm();
     printf("Quantos pets deseja cadastrar? \n");
     scanf("%d",&quant);
     tratamentoQuantidade(quant, palavra);
@@ -73,7 +78,7 @@ int Quantidade(char *palavra){
 //obter raca do pet
 char *Raca (char *nome){
     char *raca = malloc(20 * sizeof(char));
-    criaForm();
+    criaLinhaForm();
     printf("Qual a raca de %s?\n",nome);
     fgets(raca, 20, stdin);
     tratamentoASCII(raca);
@@ -83,7 +88,7 @@ char *Raca (char *nome){
 //obter especie do pet
 char *Especie(char *nome){
     char *especie = malloc(20 * sizeof(char));
-    criaForm();
+    criaLinhaForm();
     printf("\nQual a especie de %s? ", nome);
     fgets(especie, 20, stdin);
     tratamentoASCII(especie);
@@ -93,7 +98,7 @@ char *Especie(char *nome){
 //obter medicacao do pet (se houver)
 void Medicacao(){
     int qtd;
-    criaForm();
+    criaLinhaForm();
     printf("\n%s faz uso de alguma medicacao? Digite 0 caso nao ou a quantidade de medicamentos: ",dono.animal.nomepet);
     scanf("%d",&qtd);
     animal[i].medicacao = malloc(qtd * sizeof(char*));
@@ -108,7 +113,7 @@ void Medicacao(){
 //obter diagnostico
 void Diagnostico(){
     int qtd;
-    criaForm();
+    criaLinhaForm();
     printf("\n%s tem alguma doenca cronica, disfuncao ou outro diagnostico?\nDigite 0 caso nao ou a quantidade de diagnosticos: ");
     scanf("%d",&qtd);
     dono.animal.diagnostico = malloc(qtd * sizeof(char*));
@@ -139,11 +144,12 @@ int obterHumor(){
     printf("\n          escolha: ");
     scanf("%c", &choice);
     aux = choice - '0';
-    aux = tratamenoObterDadosDiarios(aux, 1, 5);
+    aux = tratamentoObterDadosDiarios(aux, 1, 5);
     return aux;
 }
 
 int obterAlimentacao(){
+    criaMenuLinhaSuperior();
     criaMenuItem(STRTAM, "          E como foi a alimentação dele(a) hoje?");
     criaMenuItem(STRTAM, "1 - não comeu");
     criaMenuItem(STRTAM, "2 - comeu normalmente");
@@ -153,24 +159,26 @@ int obterAlimentacao(){
     criaMenuLinhaRodape(STRTAM);
     scanf("%c", &choice);
     aux = choice - '0';
-    tratamenoObterDadosDiarios(aux, 1, 5);
+    tratamentoObterDadosDiarios(aux, 1, 5);
     return aux;
 }
 
 int obterMedicacao(){
-    criaMenuLinhaSuperior(STRTAM, "         Fez uso de algum medicamento hoje?");
+    criaMenuLinhaSuperior();
+    criaMenuItem(STRTAM, "         Fez uso de algum medicamento hoje?");
     criaMenuItem(STRTAM, "          1 - não");
     criaMenuItem(STRTAM, "          2 - de rotina");
     criaMenuItem(STRTAM, "          3 - outra medicação");
     criaMenuLinhaRodape(STRTAM);
     scanf("%c", &choice);
     aux = choice - '0';
-    tratamenoObterDadosDiarios(aux, 1, 3);
+    tratamentoObterDadosDiarios(aux, 1, 3);
     return aux;
 }
 
 int obterUrina(){
-    criaMenuLinhaSuperior(STRTAM, "         Qual era o aspecto da urina hoje?");
+    criaMenuLinhaSuperior();
+    criaMenuItem(STRTAM, "         Qual era o aspecto da urina hoje?");
     criaMenuItem(STRTAM, "          1 - cor típica e líquida");
     criaMenuItem(STRTAM, "          2 - cor alaranjada");
     criaMenuItem(STRTAM, "          3 - cor avermelhada");
@@ -178,12 +186,13 @@ int obterUrina(){
     criaMenuLinhaRodape(STRTAM);
     scanf("%c", &choice);
     aux = choice - '0';
-    //TODO:tratamento de erro
+    tratamentoObterDadosDiarios(aux, 1, 4);
     return aux;
 }
 
 int obterFezes(){
-    criaMenuLinhaSuperior(STRTAM, "         Quanto as fezes, como foi hoje?");
+    criaMenuLinhaSuperior();
+    criaMenuItem(STRTAM, "         Quanto as fezes, como foi hoje?");
     criaMenuItem(STRTAM, "          1 - normal");
     criaMenuItem(STRTAM, "          2 - preta");
     criaMenuItem(STRTAM, "          3 - branca");
@@ -196,12 +205,13 @@ int obterFezes(){
     criaMenuLinhaRodape(STRTAM);
     scanf("%c", &choice);
     aux = choice - '0';
-    //TODO:tratamento de erro
+    tratamentoObterDadosDiarios(aux, 1, 9);
     return aux;
 }
 
 int obterIrregularidades(){
-    criaMenuLinhaSuperior(STRTAM, "         Aconteceu algo de diferente?");
+    criaMenuLinhaSuperior();
+    criaMenuItem(STRTAM, "         Aconteceu algo de diferente?");
     criaMenuItem(STRTAM, "          1 - vômito");
     criaMenuItem(STRTAM, "          2 - diarréia");
     criaMenuItem(STRTAM, "          3 - intestino preso");
@@ -213,13 +223,9 @@ int obterIrregularidades(){
     criaMenuLinhaRodape(STRTAM);
     scanf("%c", &choice);
     aux = choice - '0';
-    //TODO:tratamento de erro
+    tratamentoObterDadosDiarios(aux, 1, 8);
     return aux;
 }
-
-
-
-
 
 
 
