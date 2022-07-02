@@ -142,6 +142,7 @@ void Menu_Clinica()
 {
     criaMenuLinhaSuperior();
     criaMenuItem(STRTAM, "      Onde deseja ir profissional?: ");
+    //inserir: cadastro de veterinario
     criaMenuItem(STRTAM, "      1 - Produtos");
     criaMenuItem(STRTAM, "      2 - Cartao de Vacinas");
     criaMenuItem(STRTAM, "      3 - Diario Pet");

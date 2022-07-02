@@ -8,6 +8,13 @@ typedef struct{
     float diario[12][31];
 }diario;
 
+struct vacinas{
+    char nome[40], data[10];
+    int dose;
+};
+
+struct vacinas *vacina;
+
 //struct das informações dos pets
 typedef struct{
     char nomepet[50], especie[20], raca[20], **medicacao, **diagnostico;
@@ -15,6 +22,7 @@ typedef struct{
     char sexo;
     //sistema matricial de meses gerados a partir da quantidade de pets
     diario dados;
+    struct vacinas vacina;
 }pet;
 
 //variável ou vetor do tipo struct pet
@@ -23,7 +31,7 @@ pet animal[2];
 //struct das informações do tutor
 struct tutor{
     char nome[50], email[50], senha[20], pessoa[15], numero[11];
-    int quantidade;
+    int quantidade, id;
     pet animal;
 }dono;
 
@@ -31,7 +39,7 @@ struct tutor{
 //struct  das informações do veterinario
 typedef struct{
     char nome[50], especialidade[50], pessoa[15];
-    int experiencia;
+    int experiencia, id;
 }veterinarios;
 
 //variável ou vetor do tipo struct veterinarios
@@ -46,9 +54,9 @@ typedef struct{
 vendas *produto;
 
 //struct das informações da clínica
-struct{
+struct clinica{
     char nome[50], email[50], senha[20], CNPJ[15], numero[11];
-    int quantidade;
+    int quantidade, id;
     veterinarios vet;
     vendas produto;
 }clinica;
@@ -102,22 +110,16 @@ int calculoMes(char *a){
 }
 
 int main(){
-    // //EXEMPLO DE APLICAÇÃO DE ALOCAÇÃO DINÂMICA
-    // /*int qtd=1,user=0;
-    // dono.animal=malloc(qtd * sizeof(pet));
-    // for(int i=0; i<qtd; i++){
-    //     strcpy(dono.animal[i].nomepet,"zezinho");
-    //     printf("%s\n\n",dono.animal[i].nomepet);
-    // }
-    // */
-
+    //obter data do sistema
     strcpy(data, getData());
-
     int dia = calculoDia(data), mes = calculoMes(data);
+    char dd, mm;
+    //variaveis de escolha
+    char choice, tipodeusuario;
 
-    char choice, tipodeusuario, dd, mm;
+    animal[0].id = gerarID1();
+    dono.id = gerarID2();
 
-    animal[0].id = gerarID();
 
     menuInicial:
     MenuInicio();
@@ -164,8 +166,8 @@ int main(){
                         strcpy(dono.senha, Senha());
                         printf("%s",dono.senha);
                         Confirma(dono.senha, "sua senha");
-                        cadastroRealizado();
-                        //TODO: fprintf
+                        dono.id = gerarID2();
+                        salvar(tipodeusuario);
                         break;
 
                     case '2':
@@ -176,8 +178,8 @@ int main(){
                         strcpy(clinica.senha, Senha());
                         printf("%s",clinica.senha);
                         Confirma(clinica.senha, "sua senha");
-                        cadastroRealizado();
-                        //TODO: fprintf
+                        clinica.id = gerarID2;
+                        salvar(tipodeusuario);
                         break;
 
                     case '3':
@@ -218,7 +220,6 @@ int main(){
             //cadastrar pet
             case '1'://-----------------------------------------------------------------------
 
-                animal[0].id = 1;
                 dono.quantidade = Quantidade(choice);
                 for(i=0; i<dono.quantidade; i++){
                     strcpy(animal[i].nomepet, Nome());
@@ -308,6 +309,7 @@ int main(){
                         VetorAuxiliarCodigo[3] = obterUrina();
                         VetorAuxiliarCodigo[4] = obterFezes();
                         VetorAuxiliarCodigo[5] = obterIrregularidades();
+
                         //limpa
                         system("cls");
                         salvarDiario:
@@ -319,9 +321,10 @@ int main(){
                         fflush(stdin);
                         printf("\n\n            escolha:");
                         scanf("%c",&choice);
+
                         if(choice == '1'){
                             animal[i].dados.diario[mes][dia] = codificador(VetorAuxiliarCodigo, 5, 0);
-                            // armazenarDiario();
+                            //armazenarDiario();
                         }else if(choice == 2){
                             criaForm();
                             printf("    Escreva o dia em que os dados serao salvos: ");
@@ -474,7 +477,7 @@ int main(){
                 break;
 
                 case '3':
-                meuDiarioPetClinica:
+                menuDiarioPetClinica:
                 Menu_Pet_Clinica();
                 scanf("%c",&choice);
                 

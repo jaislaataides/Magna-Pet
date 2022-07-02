@@ -151,3 +151,4 @@ int validadordeAscii(char *palavra){
     }
     return 0;
 }
+

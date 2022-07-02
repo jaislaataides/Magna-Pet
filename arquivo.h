@@ -3,29 +3,32 @@
 // ------------------------------------------- A R Q U I V O S ----------------------------------------------------------
 FILE *dadosDiarios;
 FILE *ultId;
+FILE *ultId2;
+FILE *dadosTutor;
+FILE *dadosClinica;
+FILE *registroTutor;
+FILE *vacinas; 
 //TODO:
-FILE *dadosTutor;//bin
-FILE *dadosClinica;//bin
-FILE *notificacao;//txt?
+FILE *tela;//txt?
 FILE *loja;//bin
 
-int  gerarID(){
-    int ID;
+//TODO: BUSCADOR DE LOGIN //bin
 
+//---- gera id sequencial dos animais ----------------------------------------------------------------------------------
+int  gerarID1(){
+    int ID;
         fseek(ultId, 0, SEEK_END);
         int size = ftell(ultId);
-        fclose(ultId);
+        fclose(ultId); 
 
-        if(size == 0){
+        if(size == -1){
             ultId = fopen("UltimaID.txt", "w");
-            fprintf(ultId, 1);
+            fprintf(ultId, "%d", 1);
             fclose(ultId);
         }else{
         ultId = fopen("UltimaID.txt", "r");
         fscanf(ultId, "%d", &ID);
-        printf("\n%d",ID);
         ID++;
-        printf("\n%d",ID);
         fclose(ultId);
         ultId = fopen("UltimaID.txt","w");
         fprintf(ultId, "%d",ID);
@@ -34,18 +37,170 @@ int  gerarID(){
     return ID;
 }
 
+//---- gera id sequencial dos usuários ----------------------------------------------------------------------------------
+int  gerarID2(){
+    int ID;
+        fseek(ultId2, 0, SEEK_END);
+        int size = ftell(ultId2);
+        printf("\n%d\n", size);
+        fclose(ultId2); 
+
+        if(size == -1){
+            ultId2 = fopen("UltimaID2.txt", "w");
+            fprintf(ultId, "%d", 1000);
+            fclose(ultId2);
+        }else{
+        ultId2 = fopen("UltimaID2.txt", "r");
+        fscanf(ultId2, "%d", &ID);
+        ID++;
+        fclose(ultId2);
+        ultId2 = fopen("UltimaID2.txt","w");
+        fprintf(ultId2, "%d",ID);
+        fclose(ultId2);
+        }
+    return ID;
+}
+
+//------- armazena dados diários dos pets --------------------------------------------------------------------------
 void armazenarDiario(int i, char *data, float codigo){
     char arquivo[8];
-
-    sprintf(arquivo, "%d.txt", animal[i].id);
+    sprintf(arquivo, "pet%d.txt", animal[i].id);
     dadosDiarios = fopen(arquivo,"a");
-    fprintf(dadosDiarios, "#%s$%.0f\n");
+    fprintf(dadosDiarios, "#%s$%.0f\n",data,codigo);
     fclose(dadosDiarios);
 }
 
-void salvar(){
+// -------- salva cadastro de usuário -------------------------------------------------------------------------------
+void salvar(char tipodeusuario){
+    char *arquivo = malloc(sizeof(char));
 
+    if(tipodeusuario=='1'){
+        sprintf(arquivo, "tutor%d.bin", dono.id);
+        dadosTutor = fopen(arquivo, "ab");
+        fwrite(&dono, sizeof(struct tutor), 1, dadosTutor);
+        for(int i=0; i<dono.quantidade; i++){
+            fwrite(&animal[i], sizeof(pet), 1, dadosTutor);
+        }
+        fclose(dadosTutor);
+    }else{
+        sprintf(arquivo, "clinica%d.bin", clinica.id);
+        dadosClinica = fopen(arquivo, "ab");
+        fwrite(&clinica, sizeof(struct clinica), 1, dadosClinica);
+        for(int i=0; i<clinica.quantidade; i++){
+            fwrite(&vet[i], sizeof(veterinarios), 1, dadosClinica);
+        }
+        fclose(dadosClinica);
+    }
+    cadastroRealizado();
 }
+
+// ----------- salva cadastro de usuário -------------------------------------------------------------------------------
+void salvarPet(char tipodeusuario){
+    char arquivo[30];
+
+    if(tipodeusuario=='1'){
+        sprintf(arquivo, "tutor%d.bin", dono.id);
+        dadosTutor = fopen(arquivo, "ab");
+
+        for(int i=0; i<dono.quantidade; i++){
+            fwrite(&animal[i], sizeof(pet), 1, dadosTutor);
+        }
+
+        fclose(dadosTutor);
+    }else{
+        sprintf(arquivo, "clinica%d.bin", clinica.id);
+        dadosClinica = fopen(arquivo, "ab");
+
+        for(int i=0; i<clinica.quantidade; i++){
+            fwrite(&vet[i], sizeof(veterinarios), 1, dadosClinica);
+        }
+
+        fclose(dadosClinica);
+    }
+    cadastroRealizado();
+}
+
+// ------------ armazena vacinas ----------------------------------------------------------------------------------------
+void cadastrarVacina(int id, int tipodeusuario, int petEscolhido){
+    char arquivo[15], choice;
+    int qtd, i;
+
+    if(id<1000 && tipodeusuario==1){
+        //------------- T U T O R ------------------
+        sprintf(arquivo, "registro-Tutor%d.bin", dono.id);
+        if(buscarRegistro(id, tipodeusuario, arquivo)==0){
+            registroTutor = fopen(arquivo, "ab");
+            fwrite(id, sizeof(int), 1, registroTutor);
+            fclose(registroTutor);
+
+            do{
+                printf("Quantas vacinas deseja cadastrar?");
+                printf("\nLembre-se de que voce pode realizar essa etapa uma unica vez!\n");
+                printf("\n          escolha:");
+                scanf("%c",&choice);
+                qtd = choice -'0';
+            }while(qtd<1 || qtd>50);
+
+            vacina = malloc(qtd * sizeof(struct vacinas));
+
+            sprintf(arquivo, "vacinas-pet%d.bin", id);
+            vacinas = fopen(arquivo, "ab");
+
+            obterVacinas(qtd);
+
+            fclose(vacinas);
+            cadastroRealizado();
+        }
+    }else{
+        // ------------ C L Í N I C A --------------
+        do{
+            printf("\nQuantas vacinas deseja registrar?");
+            scanf("%c",&choice);
+            qtd = choice - '0';
+        }while(qtd < 1 || qtd > 10);
+
+        vacina = malloc(qtd * sizeof(struct vacinas));
+
+        sprintf(arquivo, "vacinas-pet%d.bin", id);
+        vacinas = fopen(arquivo, "ab");
+
+        obterVacinas(qtd);
+        
+        fclose(vacinas);
+        cadastroRealizado();
+    }
+}
+
+//------ obtém informações das vacinas ----------------------------------------------------------------------------------
+void obterVacinas(int qtd){
+    for (int i=0; i<qtd; i++){
+        //obter nome da vacina, dose e data
+        fflush(stdin);
+        printf("\nEscreva o nome da %d vacina: ");
+        fgets(vacina[i].nome, 40, stdin);
+        printf("\n Escreva a data no formato dd/mm/aaaa");
+        fflush(stdin);
+        fgets(vacina[i].data, 10, stdin);
+        printf("\nEscreva o numero da dose");
+        scanf("%d",&vacina[i].dose);
+        fwrite(&vacina[i], sizeof(struct vacinas), 1, vacinas);
+    }
+}
+
+// ------- busca registro de inserção de vacina por id ------------------------------------------------------------------
+int buscarRegistro(int id, int tipodeusuario, char *arquivo){
+    int log;
+    registroTutor = fopen(arquivo, "rb");
+    while(!feof (registroTutor)){
+        fread(&log, sizeof(int), 1, registroTutor);
+        if(log==id){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
 
 
 //--------------------------------- M A N I P U L A Ç Ã O   D E   D A T A   ----------------------------------------------
@@ -123,3 +278,4 @@ char *getData(){
 
     return data;
 }
+

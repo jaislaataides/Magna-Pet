@@ -13,7 +13,7 @@
 
 //obter nome do usuário ou pet
 char *Nome(){
-    char *nome = malloc(50 * sizeof(char*));
+    char *nome = malloc(50 * sizeof(char));
     criaForm();
     printf("Digite o nome: ");
     fgets(nome, 50, stdin);
@@ -24,7 +24,7 @@ char *Nome(){
 
 //obter CPF ou CNPJ do usuário
 char *CPF(){
-    char *input = malloc(14*sizeof(char*));
+    char *input = malloc(14*sizeof(char));
     criaLinhaForm();
     printf("Digite seu CPF ou CNPJ: ");
     fgets(input, 15, stdin);
@@ -34,7 +34,7 @@ char *CPF(){
 
 //obter email do usuário
 char *Email(){
-    char *email = malloc(20 * sizeof(char*));
+    char *email = malloc(20 * sizeof(char));
     criaLinhaForm();
     printf("Digite o email: ");
     fgets(email, 30, stdin);
@@ -44,7 +44,7 @@ char *Email(){
 
 //obter senha do usuário
 char *Senha(){
-    char *senha = malloc(10 * sizeof(char*));
+    char *senha = malloc(10 * sizeof(char));
     criaLinhaForm();
     printf("Digite sua senha (6 - 10 digitos): ");
     fgets(senha, 10, stdin);

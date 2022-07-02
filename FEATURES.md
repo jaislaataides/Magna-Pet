@@ -2,7 +2,8 @@
 
 <h4>Versão 1 - 06890bd</h4>
 
-<hr>
+<br>
+
 
 <h5>Features</h5>
 
@@ -19,7 +20,7 @@
 
 <h4>Versão 2 - ecaeddc</h4>
 
-<hr>
+<br>
 
 <h5>Alterações</h5>
 
@@ -34,7 +35,7 @@
 
 <h4>Versão 3 - 734275b</h4>
 
-<hr>
+<br>
 
 <h5>Features</h5>
 
@@ -45,9 +46,10 @@
 
 <hr>
 
-<h4>Versão 4 - hash</h4>
+<h4>Versão 4 - 2dddc22</h4>
 
-<hr>
+<br>
+
 
 <h5>Features</h5>
 
@@ -58,5 +60,17 @@
 
 <hr>
 
+<h4>Versão 5 - hash</h4>
+
+<br>
+
+<h5>Atualizações</h5>
+
+<ul>
+<li><strong>Criação </strong> de aramazenamento nexo entre tutor-pet e clínica-veterinário;</li>
+<li><strong>Implementação</strong> de salvamento das informações de cadastro em arquivo externo sigiloso.</li>
+</ul>
+
+<hr>
 
 
