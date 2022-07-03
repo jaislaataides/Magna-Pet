@@ -152,3 +152,18 @@ int validadordeAscii(char *palavra){
     return 0;
 }
 
+int validadordeDia(int dia, int mes){
+    if(dia < 1 || dia > diasPorMes[mes-1]){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
+int validadordeMes(int mes){
+    if( mes<1 || mes > 12){
+        return 1;
+    }
+    return 0;
+}
+

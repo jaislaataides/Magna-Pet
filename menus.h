@@ -148,12 +148,12 @@ void Menu_Pet_Tutor()
 void Menu_Clinica()
 {
     criaMenuLinhaSuperior();
-    criaMenuItem(STRTAM, "      Onde deseja ir profissional?: ");
-    //inserir: cadastro de veterinario
-    criaMenuItem(STRTAM, "      1 - Produtos");
-    criaMenuItem(STRTAM, "      2 - Cartao de Vacinas");
-    criaMenuItem(STRTAM, "      3 - Diario Pet");
-    criaMenuItem(STRTAM, "      4 - Contato");
+    criaMenuItem(STRTAM, "      Onde deseja ir?: ");
+    criaMenuItem(STRTAM, "      1 - cadastrar profissional");
+    criaMenuItem(STRTAM, "      2 - Produtos");
+    criaMenuItem(STRTAM, "      3 - Cartao de Vacinas");
+    criaMenuItem(STRTAM, "      4 - Diario Pet");
+    criaMenuItem(STRTAM, "      5 - Contato");
     criaMenuItem(STRTAM, "      0 - Sair");
     criaMenuLinhaRodape(STRTAM);
     printf("\n\n            escolha: ");
@@ -165,9 +165,8 @@ void Menu_Vacinas_Clinica()
     criaMenuLinhaSuperior();
     criaMenuItem(STRTAM, "      Profissional, o que deseja fazer?: ");
     criaMenuItem(STRTAM, "      1 - Inserir Vacinas");
-    criaMenuItem(STRTAM, "      2 - Editar Vacinas");
-    criaMenuItem(STRTAM, "      3 - Inserir Avisos");
-    criaMenuItem(STRTAM, "      4 - Voltar ao Menu Principal");
+    criaMenuItem(STRTAM, "      2 - Inserir Avisos");
+    criaMenuItem(STRTAM, "      3 - Voltar ao Menu Principal");
     criaMenuItem(STRTAM, "      0 - Sair");
     criaMenuLinhaRodape(STRTAM);
     printf("\n\n            escolha: ");

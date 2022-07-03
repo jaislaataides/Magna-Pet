@@ -18,8 +18,7 @@ struct vacinas *vacina;
 //struct das informações dos pets
 typedef struct{
     char nomepet[50], especie[20], raca[20], **medicacao, **diagnostico;
-    int idade, comprimento, id; //TODO:
-    float peso;
+    int idade, comprimento, id; 
     //sistema matricial de meses gerados a partir da quantidade de pets
     diario dados;
     struct vacinas vacina;
@@ -75,18 +74,20 @@ const char *alimentacao[6]={{" "},{"nao comeu"},{"comeu normalmente"},{"comeu al
 const char *medicacaododia[4]={{" "},{"não"},{"de rotina"},{"outra medicação"}};
 const char *urina[5]={{" "},{"cor típica e líquida"},{"cor alaranjada"},{"cor avermelhada"},{"cor amarronzada"}};
 const char *fezes[10]={{" "},{"normal"},{"preta"},{"branca"},{"cinza"},{"verde"},{"com verme"},{"com giárdia"},{"com muco amarelo"},{"com sangue"}};
+const char *irregularidades[9] = {{" "},{"vomito"},{"diarreia"},{"ingestao incorreta de agua"},{"intestino preso"},{"gases"},{"febre"},{"olhos amarelados"},{"nao"}};
 
 //notificação
 int setanotificacao=0;
 
 //variáveis de dados diários
-char data[10];
+char data[10], tipodeusuario;
 int parametro;
 
 //vetores auxiliares
 
 int VetorAuxiliarCodigo[7];
 int diasPorMes[]={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+int regulador=0;
 
 //variaveis de loop
 int i,j;
@@ -125,7 +126,7 @@ int main(){
     int dia = calculoDia(data), mes = calculoMes(data);
     char dd, mm;
     //variaveis de escolha
-    char choice, tipodeusuario;
+    char escolha;
     int escolhaInt;
 
     decodificador(123456, &VetorAuxiliarCodigo);
@@ -134,10 +135,10 @@ int main(){
     MenuInicio();
     printf("\n\n        escolha: ");
     fflush(stdin);
-    scanf("%c",&choice);
+    scanf("%c",&escolha);
 
     fflush(stdin);
-    switch(choice){
+    switch(escolha){
         case '1':
         system("cls");
             usertype:
@@ -178,6 +179,26 @@ int main(){
                         dono.id = gerarID2();
                         salvar(tipodeusuario);
                         historicoLogins();
+                        system("cls");
+
+                        setanotificacao2:
+                        criaMenuLinhaSuperior();
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuItem(STRTAM, "      Voce gostaria de receber lembretes?    ");
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuItem(STRTAM, "                   0 - nao");
+                        criaMenuItem(STRTAM, "                   1 - sim");
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuLinhaRodape(STRTAM);
+                        printf("\n\n            escolha: ");
+                        fflush(stdin);
+                        scanf("%c", &escolha);
+
+                        while(escolha!='0' || escolha!= '1'){
+                            opcaoInvalida();
+                            goto setanotificacao2;
+                        }
+
                         break;
 
                     case '2':
@@ -236,6 +257,8 @@ int main(){
                 criaMenuLinhaRodape(STRTAM);
                 printf("\n\n");
                 system("pause");
+                system("cls");
+                system("pause");
                 goto login;
             }
 
@@ -255,9 +278,9 @@ int main(){
 
         menuPrincipalTutor:
         Menu_Tutor();
-        scanf("%c",&choice);
+        scanf("%c",&escolha);
 
-        switch (choice){
+        switch (escolha){
             //cadastrar pet
             case '1'://-----------------------------------------------------------------------
                 cadastrarPets:
@@ -267,6 +290,9 @@ int main(){
                     strcpy(animal[i].nomepet, Nome());
                     strcpy(animal[i].especie, Especie(animal[i].nomepet));
                     strcpy(animal[i].raca, Raca(animal[i].nomepet));
+                    Idade(animal[i].nomepet);
+                    Tamanho(animal[i].nomepet);
+                    Peso(animal[i].nomepet);
                     Medicacao();
                     Diagnostico();
                     animal[i].id = gerarID1();
@@ -280,9 +306,9 @@ int main(){
 
                 menuCartilhaTutor:
                 Menu_Cartilha_Tutor();
-                scanf("%c",&choice);
+                scanf("%c",&escolha);
 
-                    switch(choice){
+                    switch(escolha){
 
                         case '1':
                             criaMenuLinhaSuperior();
@@ -296,7 +322,7 @@ int main(){
                         break;
 
                         case '2':
-                            printaCartilha(tipodeusuario, escolhaInt, setanotificacao);
+                            printaCartilha(escolhaInt, setanotificacao);
                         break;
 
                         case '3':
@@ -315,9 +341,9 @@ int main(){
             case '3'://-----------------------------------------------------------------------
             menuVacinas:
             Menu_Vacinas_Tutor();
-            scanf("%c",choice);
+            scanf("%c",escolha);
     
-                switch(choice){
+                switch(escolha){
     
                     case '1':
                         setarNotificacoes:
@@ -334,11 +360,14 @@ int main(){
                         criaMenuLinhaRodape(STRTAM);
                         printf("\n\n            escolha: ");
                         fflush(stdin);
-                        scanf("%c", choice);
+                        scanf("%c", &escolha);
 
-                        while(choice!='0' || choice!= '1'){
+                        while(escolha!='0' || escolha!= '1'){
                             opcaoInvalida();
                             goto setarNotificacoes;
+                        }
+                        if(escolha=='1'){
+                            setanotificacao=1;
                         }
 
                     break;
@@ -383,9 +412,9 @@ int main(){
                             }
                             printf("\n\n            escolha: ");
                             fflush(stdin);
-                            scanf("%c", choice);
+                            scanf("%c", &escolha);
 
-                            escolhaInt = choice - '0';
+                            escolhaInt = escolha - '0';
 
                             while(escolhaInt < 0 || escolhaInt > dono.quantidade){
                                 goto prosseguirParaCadastro;
@@ -412,9 +441,9 @@ int main(){
 
             case '4'://-----------------------------------------------------------------------
             Menu_Pet_Tutor();
-            scanf("%c",choice);
+            scanf("%c",escolha);
                 
-                switch(choice){
+                switch(escolha){
                     case '1':
                         
                         prosseguirParaDiario:
@@ -430,22 +459,22 @@ int main(){
                         }
                         printf("\n\n            escolha: ");
                         fflush(stdin);
-                        scanf("%c", choice);
+                        scanf("%c", &escolha);
 
-                        escolhaInt = choice - '0';
+                        escolhaInt = escolha - '0';
 
                         while(escolhaInt < 0 || escolhaInt > dono.quantidade){
                             goto prosseguirParaDiario;
                         }
 
-                        VetorAuxiliarCodigo[0] = obterHumor();
-                        VetorAuxiliarCodigo[1] = obterAlimentacao();
-                        VetorAuxiliarCodigo[2] = obterMedicacao();
-                        VetorAuxiliarCodigo[3] = obterUrina();
-                        VetorAuxiliarCodigo[4] = obterFezes();
-                        VetorAuxiliarCodigo[5] = obterIrregularidades();
+                        VetorAuxiliarCodigo[0] = obterHumor(tipodeusuario);
+                        VetorAuxiliarCodigo[1] = obterAlimentacao(tipodeusuario);
+                        VetorAuxiliarCodigo[2] = obterMedicacao(tipodeusuario);
+                        VetorAuxiliarCodigo[3] = obterUrina(tipodeusuario);
+                        VetorAuxiliarCodigo[4] = obterFezes(tipodeusuario);
+                        VetorAuxiliarCodigo[5] = obterIrregularidades(tipodeusuario);
 
-                        //limpa
+                        //limpaENotifica();
                         system("cls");
                         salvarDiario:
                         criaMenuLinhaSuperior();
@@ -455,22 +484,33 @@ int main(){
                         criaMenuLinhaRodape(STRTAM);
                         fflush(stdin);
                         printf("\n\n            escolha:");
-                        scanf("%c",&choice);
+                        scanf("%c",&escolha);
 
-                        if(choice == '1'){
+                        if(escolha == '1'){
                             animal[escolhaInt].dados.diario[mes][dia] = codificador(VetorAuxiliarCodigo, 5, 0);
                             armazenarDiario(escolhaInt, data, animal[escolhaInt].dados.diario[mes][dia]);
-                        }else if(choice == 2){
+                        }else if(escolha == 2){
                             criaForm();
+                            
+                            insereDia:
+                            fflush(stdin);
                             printf("    Escreva o dia em que os dados serao salvos: ");
                             fgets(dd, 2, stdin);
                             dia = calculoDia(dd);
-                            //TODO: validaçõa dias por mes
                             criaLinhaForm();
+                            
+                            insereMes:
+                            fflush(stdin);
                             printf("    Agora escreva o mes: ");
                             fgets(mm, 2, stdin);
                             mes = calculoMes(mm);
-                            //TODO: validação meses por ano
+                            while(validaMes(mes)==1){
+                                goto insereMes;
+                            }
+                            while(validaDia(dia, mes)==1){
+                                goto insereDia;
+                            }
+
                             animal[escolhaInt].dados.diario[mes][dia] = codificador(VetorAuxiliarCodigo, 5, 0);
                             armazenarDiario(escolhaInt, data, animal[escolhaInt].dados.diario[mes][dia]);
                         }else{
@@ -480,11 +520,37 @@ int main(){
                     break;
                 
                     case '2':
-                        //TODO: editar
+                        criaMenuLinhaSuperior();
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuItem(STRTAM, "      Essa opcao implica no apagamento");
+                        criaMenuItem(STRTAM, "        das informaçoes cadastradas");
+                        criaMenuItem(STRTAM, "              anteriormente.");
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuLinhaRodape(STRTAM);
+                        goto prosseguirParaDiario;
                     break;
 
                     case '3':
-                        //TODO: desenvolver buscador
+                        prosseguirParaBusca:
+                        criaMenuLinhaSuperior();
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuItem(STRTAM, "      Para prosseguir para a busca voce ");
+                        criaMenuItem(STRTAM, "     precisa selecionar um pet dentre os");
+                        criaMenuItem(STRTAM, "          que voce tem cadastrados: ");
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuLinhaRodape(STRTAM);
+                        for(i=0; i<dono.quantidade; i++){
+                            printf("\n          %d - %s",i,animal[i].nomepet);
+                        }
+                        printf("\n\n            escolha: ");
+                        fflush(stdin);
+                        scanf("%c", &escolha);
+
+                        escolhaInt = escolha - '0';
+
+                        while(escolhaInt < 0 || escolhaInt > dono.quantidade){
+                            goto prosseguirParaBusca;
+                        }
                     break;
                     
                     case '4':
@@ -504,8 +570,8 @@ int main(){
             case '5':
             menuTutorClinica:
             Menu_Clinica_Tutor();
-            scanf("%c",&choice);
-            switch(choice){
+            scanf("%c",&escolha);
+            switch(escolha){
                 case '1':
                     //TODO: função printy loja
                 break;
@@ -543,16 +609,23 @@ int main(){
     }else{
         menuPrincipalClinica:
         Menu_Clinica();
-        scanf("%c",choice);
+        scanf("%c",escolha);
 
-            switch(choice){
+            switch(escolha){
 
                 case '1':
+                cadastrarVets:
+
+
+
+                break;
+
+                case '2':
                 menuProdutosClinica:
                 Menu_Produtos_Clinica();
-                    scanf("%c",choice);
+                    scanf("%c",escolha);
 
-                    switch(choice){
+                    switch(escolha){
                         case '1':
                             cadastrarProdutos();
                         break;
@@ -580,11 +653,11 @@ int main(){
                     }
                 break;
 
-                case '2':
+                case '3':
                     menuVacinasClinica:
                     Menu_Vacinas_Clinica();
-                    scanf("%c",choice);
-                    switch(choice){
+                    scanf("%c",escolha);
+                    switch(escolha){
                         case '1':
                         prosseguirParaCadastro2:
                             criaMenuLinhaSuperior();
@@ -597,13 +670,15 @@ int main(){
                             listaUsuario();
                             printf("\n\n            escolha: ");
                             fflush(stdin);
-                            scanf("%c", choice);
+                            scanf("%c", &escolha);
 
-                            escolhaInt = choice - '0';
+                            escolhaInt = escolha - '0';
 
                             while(escolhaInt < 0 || escolhaInt > parametro){
                                 goto prosseguirParaCadastro2;
                             }
+
+                            dono.id = encontraIDUsuario(escolhaInt); 
 
                             prosseguirParaCadastro3:
                             criaMenuLinhaSuperior();
@@ -617,9 +692,9 @@ int main(){
 
                             printf("\n\n            escolha: ");
                             fflush(stdin);
-                            scanf("%c", choice);
+                            scanf("%c", &escolha);
 
-                            escolhaInt = choice - '0';
+                            escolhaInt = escolha - '0';
 
                             while(escolhaInt < 0 || escolhaInt > parametro){
                                 goto prosseguirParaCadastro3;
@@ -641,14 +716,10 @@ int main(){
                         break;
 
                         case '2':
-                            //TODO: EDITAR VACINAS//remover
+                            limpaENotifica(0);
                         break;
 
                         case '3':
-                            limpaENotifica(tipodeusuario, 0);
-                        break;
-
-                        case '4':
                             goto menuPrincipalClinica;
                         break;
 
@@ -661,18 +732,127 @@ int main(){
                     }
                 break;
 
-                case '3':
+                case '4':
                 menuDiarioPetClinica:
                 Menu_Pet_Clinica();
-                scanf("%c",&choice);
+                scanf("%c",&escolha);
                 
-                switch(choice){
+                switch(escolha){
                     case '1':
-                        //TODO: ADD BUSCADOR POR DATA
+                        // criaForm();
+                            
+                        //     insereDia:
+                        //     fflush(stdin);
+                        //     printf("    Escreva o dia em que os dados serao salvos: ");
+                        //     fgets(dd, 2, stdin);
+                        //     dia = calculoDia(dd);
+                        //     criaLinhaForm();
+                            
+                        //     insereMes:
+                        //     fflush(stdin);
+                        //     printf("    Agora escreva o mes: ");
+                        //     fgets(mm, 2, stdin);
+                        //     mes = calculoMes(mm);
+                        //     while(validaMes(mes)==1){
+                        //         goto insereMes;
+                        //     }
+                        //     while(validaDia(dia, mes)==1){
+                        //         goto insereDia;
+                        //     }
+
+                        //     animal[escolhaInt].dados.diario[mes][dia] = codificador(VetorAuxiliarCodigo, 5, 0);
+                        //     armazenarDiario(escolhaInt, data, animal[escolhaInt].dados.diario[mes][dia]);
                     break;
 
                     case '2':
-                        //TODO: ADD BUSCADOR POR TIPO
+                        prosseguirParaDiario1:
+                        criaMenuLinhaSuperior();
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuItem(STRTAM, "     Para prosseguir para o cadastro voce ");
+                        criaMenuItem(STRTAM, "     precisa selecionar um tutor dentre os");
+                        criaMenuItem(STRTAM, "             que estao cadastrados: ");
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuLinhaRodape(STRTAM);
+                        listaUsuario();
+                        printf("\n\n            escolha: ");
+                        fflush(stdin);
+                        scanf("%c", &escolha);
+
+                        escolhaInt = escolha - '0';
+
+                        while(escolhaInt < 0 || escolhaInt > parametro){
+                            goto prosseguirParaDiario1;
+                        }
+                        dono.id = encontraIDUsuario(escolhaInt); 
+
+                        prosseguirParaDiario2:
+                        criaMenuLinhaSuperior();
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuItem(STRTAM, "      Para prosseguir para o diario voce ");
+                        criaMenuItem(STRTAM, "     precisa selecionar um pet dentre os");
+                        criaMenuItem(STRTAM, "          que estao cadastrados: ");
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuLinhaRodape(STRTAM);
+
+                        listaPetsPorTutor(dono.id);
+                        
+                        printf("\n\n            escolha: ");
+                        fflush(stdin);
+                        scanf("%c", &escolha);
+
+                        escolhaInt = escolha - '0';
+
+                        while(escolhaInt < 0 || escolhaInt > dono.quantidade){
+                            goto prosseguirParaDiario2;
+                        }
+                        animal[0].id = encontraPet(escolhaInt, dono.id);
+
+                        escolhaTipo: 
+                        criaMenuLinhaSuperior();
+                        criaMenuItem(STRTAM, "      ");
+                        criaMenuItem(STRTAM, "    Escolha um dos tipos de informacao abaixo");
+                        criaMenuItem(STRTAM, "        para conhecer a data em que o pet");
+                        criaMenuItem(STRTAM, "          escolhido apresentou essas");
+                        criaMenuItem(STRTAM, "                caracteristicas.");
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuItem(STRTAM, "              1 - humor");
+                        criaMenuItem(STRTAM, "              2 - alimentacao");
+                        criaMenuItem(STRTAM, "              3 - medicacao");
+                        criaMenuItem(STRTAM, "              4 - urina ");
+                        criaMenuItem(STRTAM, "              5 - fezes");
+                        criaMenuItem(STRTAM, "              6 - outras irregularidades");
+                        criaMenuItem(STRTAM, " ");
+                        criaMenuLinhaRodape(STRTAM);
+                        fflush(stdin);
+                        scanf("%c",&escolha);
+                        switch(escolha){
+                            case '1':
+                                buscadorPorTipo(11, (obterHumor(tipodeusuario)+'0'), animal[escolhaInt].id);
+                            break;
+
+                            case '2':
+                                buscadorPorTipo(12, (obterAlimentacao(tipodeusuario) + '0'), animal[escolhaInt].id);
+                            break;
+
+                            case '3':
+                                buscadorPorTipo(13, (obterMedicacao(tipodeusuario) + '0'),animal[escolhaInt].id);
+                            break;
+                            case '4':
+                                buscadorPorTipo(14, (obterUrina(tipodeusuario) + '0'), animal[escolhaInt].id);
+                            break;
+
+                            case '5':
+                                buscadorPorTipo(15, (obterFezes(tipodeusuario) + '0'), animal[escolhaInt].id);
+                            break;
+
+                            case '6':
+                                buscadorPorTipo(16, (obterIrregularidades(tipodeusuario) + '0'), animal[escolhaInt].id);
+                            break;
+
+                            default:
+                            opcaoInvalida();
+                            goto escolhaTipo;
+                        }
                     break;
                     
                     case '3':
@@ -688,11 +868,11 @@ int main(){
                 }
                 break;
 
-                case '4':
+                case '5':
                 menuContatoClinica:
                 Menu_Contato_Clinica();
-                scanf("%c",&choice);
-                switch(choice){
+                scanf("%c",&escolha);
+                switch(escolha){
                     case '1':
                         //  TODO: MENU INFO
                     break;

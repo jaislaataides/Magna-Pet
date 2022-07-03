@@ -71,6 +71,7 @@ void tratamentoASCII(char *palavra){
     }
 }
 
+//estabelece uma quantidade mínima e máxima
 void tratamentoQuantidade(int *quant, char *palavra){
     while (quant<1 || quant>30){
         criaLinhaForm();
@@ -80,6 +81,7 @@ void tratamentoQuantidade(int *quant, char *palavra){
     }
 }
 
+//com base em variáveis, gera tratamento de erro por intervalo
 int tratamentoObterDadosDiarios(int aux, int op1, int op2){
     char escolha;
     printf("\n\n");
@@ -97,3 +99,4 @@ int tratamentoObterDadosDiarios(int aux, int op1, int op2){
     }
     return aux;
 }
+

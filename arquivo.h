@@ -13,6 +13,8 @@ FILE *logins;
 FILE *loja;
 FILE *plantao;
 
+char arquivo[30], dataDoRegistro[10];
+
 
 //---- gera id sequencial dos animais ----------------------------------------------------------------------------------
 int  gerarID1(){
@@ -62,16 +64,14 @@ int  gerarID2(){
 
 //------- armazena dados diários dos pets --------------------------------------------------------------------------
 void armazenarDiario(int i, char *data, float codigo){
-    char arquivo[8];
     sprintf(arquivo, "pet%d.txt", animal[i].id);
     dadosDiarios = fopen(arquivo,"a");
-    fprintf(dadosDiarios, "#%s$%.0f\n",data,codigo);
+    fprintf(dadosDiarios, "%s$%.0f\n",data,codigo);
     fclose(dadosDiarios);
 }
 
 // -------- salva cadastro de usuário -------------------------------------------------------------------------------
 void salvar(char tipodeusuario){
-    char *arquivo = malloc(sizeof(char));
 
     if(tipodeusuario=='1'){
         sprintf(arquivo, "tutor%d.bin", dono.id);
@@ -95,7 +95,6 @@ void salvar(char tipodeusuario){
 
 // ----------- salva cadastro de usuário -------------------------------------------------------------------------------
 void salvarPet(char tipodeusuario){
-    char arquivo[30];
 
     if(tipodeusuario=='1'){
         sprintf(arquivo, "tutor%d.bin", dono.id);
@@ -121,8 +120,8 @@ void salvarPet(char tipodeusuario){
 
 // ------------ armazena vacinas ----------------------------------------------------------------------------------------
 void cadastrarVacina(int id, int tipodeusuario, int petEscolhido){
-    char arquivo[15], choice;
-    int qtd, i;
+
+    int qtd;
 
     if(id<1000 && tipodeusuario==1){
         //------------- T U T O R ------------------
@@ -142,8 +141,8 @@ void cadastrarVacina(int id, int tipodeusuario, int petEscolhido){
                 criaMenuLinhaRodape(STRTAM);
                 criaMenuItem(STRTAM, " ");
                 printf("\n\n                   escolha:");
-                scanf("%c",&choice);
-                qtd = choice -'0';
+                scanf("%c",&escolha);
+                qtd = escolha -'0';
             }while(qtd<1 || qtd>50);
 
             vacina = malloc(qtd * sizeof(struct vacinas));
@@ -193,8 +192,8 @@ void cadastrarVacina(int id, int tipodeusuario, int petEscolhido){
                 criaMenuLinhaRodape(STRTAM);
                 criaMenuItem(STRTAM, " ");
                 printf("\n\n                   escolha:");
-                scanf("%c",&choice);
-            qtd = choice - '0';
+                scanf("%c",&escolha);
+            qtd = escolha - '0';
         }while(qtd < 1 || qtd > 10);
 
         vacina = malloc(qtd * sizeof(struct vacinas));
@@ -246,13 +245,13 @@ int buscarRegistro(int id, int tipodeusuario, char *arquivo){
 }
 
 // ---------- limpa e notifica ------------------------------------------------------------------------------------------
-void limpaENotifica(char tipodeusuario, int escolha){
-    char arquivo[20], notificacao[300];
+void limpaENotifica(int setaNotificacao){
+    char notificacao[300];
     system("cls");
     fflush(stdin);
     sprintf(arquivo, "tutor-%d.txt", dono.id);
-    //setnotifications on
-    if(tipodeusuario=='1' && escolha==1){
+    //setanotificacao = 1
+    if(tipodeusuario=='1' && setaNotificacao==1){
         telaTutor = fopen(arquivo, "r");
         fscanf(telaTutor, "%s", notificacao);
         fclose(telaTutor);
@@ -267,6 +266,13 @@ void limpaENotifica(char tipodeusuario, int escolha){
         fgets(notificacao, 300, stdin);
         fwrite(notificacao, 300, 1, telaTutor);
         fclose(telaTutor);
+    }else if(regulador>0 && tipodeusuario == '1'){
+        printf("\n ---------------------------------------------");
+        printf("\n|             OLA, BEM VINDO(A)!              |");
+        printf("\n|          Nao se esqueca de registrar        |");
+        printf("\n|        como foi o dia de seus bichinhos     |");
+        printf("\n|                     hoje!                   |");
+        printf("\n ---------------------------------------------");
     }
 }
 
@@ -294,13 +300,12 @@ void printaNotificacao(char *mensagem){
 
 //verifica se ha registro diario na data do sistema e em caso negativo exibe mensagem de lembrete
 void gerarNotificacaoDiario(){
-    //TODO: codar decodificador -> codar buscador de dados diarios
-    printf("\n ---------------------------------------------");
-    printf("\n|             OLA, BEM VINDO(A)!              |");
-    printf("\n|          Nao se esqueca de registrar        |");
-    printf("\n|        como foi o dia de seus bichinhos     |");
-    printf("\n|                     hoje!                   |");
-    printf("\n ---------------------------------------------");
+    char dia[2], mes[2];
+    dia[0] = data[0];
+    dia[1] = data[1];
+    mes[0] = data[3];
+    mes[1] = data[4];
+    buscadorPorData(dia, mes, animal[0].id);
 }
 
 //armazena as structs dos usuarios que se cadastraram
@@ -384,7 +389,7 @@ int encontraIDUsuario(int escolha){
 
 //terceira etapa da busca dos animais: encontrar todos os animais do tutor com a id encontrada
 void listaPetsPorTutor(int tutorID){
-    char arquivo[30];
+
     pet auxiliar;
     i=0;
     sprintf(arquivo, "tutor%d.bin",tutorID);
@@ -401,7 +406,7 @@ void listaPetsPorTutor(int tutorID){
 
 //etapa final da busca dos animais: obter o id do animal desejado
 int encontraPet(int escolha, int tutorID){
-    char arquivo[30];
+
     pet auxiliar;
     i=0;
     sprintf(arquivo, "tutor%d.bin",tutorID);
@@ -415,6 +420,56 @@ int encontraPet(int escolha, int tutorID){
         i++;
     }
     fclose(dadosTutor);
+}
+
+void buscadorPorData(char *dia, char *mes, int ID_Animal){
+    char string[18];
+    
+    sprintf(arquivo, "pet-%d.txt", ID_Animal);
+    dadosDiarios = fopen(arquivo, "r");
+    while(!feof(dadosDiarios)){
+        fread(&string, 18, 1, dadosDiarios);
+        if(string[0]==dia[0] && string[1]==dia[1] && string[3]==mes[0] && string[4]==mes[1]){
+            for(i=0, j=11; i<6, j<19; i++, j++){
+                VetorAuxiliarCodigo[i] = string[j] - '0';
+            }
+        }
+    }
+    if (VetorAuxiliarCodigo[0] == 0 && tipodeusuario == '2'){
+        criaMenuLinhaSuperior();
+        criaMenuItem(STRTAM, " ");
+        criaMenuItem(STRTAM, "       Nenhum registro desse pet foi ");
+        criaMenuItem(STRTAM, "             encontrado nessa data");
+        criaMenuItem(STRTAM, " ");
+        criaMenuLinhaRodape(STRTAM);
+    }else if(VetorAuxiliarCodigo[0] == 0 && tipodeusuario == '1'){
+
+    }
+    fclose(dadosDiarios);
+    printaDadosDiarios(setanotificacao);
+}
+
+void buscadorPorTipo(int posicao, char valor, int ID_Animal){
+    char string[18];
+
+    sprintf(arquivo, "pet%d.txt", ID_Animal);
+    dadosDiarios = fopen(arquivo, "r");
+    while(!feof(dadosDiarios)){
+        fread(&string, 18, 1, dadosDiarios);
+        if(string[posicao]==valor){
+            for(i=0; i<10; i++){
+                dataDoRegistro[i] = string[i];
+            }
+        }
+    }
+    fclose(dadosDiarios);
+    if(dataDoRegistro[0] == ' '){
+        limpaENotifica(setanotificacao);
+        criaForm();
+        criaLinhaForm();
+        printf("\nEssa caracteristica foi encontrada na data: %s",dataDoRegistro);
+        criaMenuLinhaRodape(STRTAM);
+    }
 }
 
 //--------------------------------- M A N I P U L A Ç Ã O   D E   D A T A   ----------------------------------------------

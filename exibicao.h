@@ -35,8 +35,8 @@ void opcaoInvalida(){
 }
 
 //printar cartilha
-void printaCartilha(char tipodeusuario1, int escolha, int setanotificacao){
-    limpaENotifica(tipodeusuario1, setanotificacao);
+void printaCartilha(int escolha, int setanotificacao){
+    limpaENotifica(setanotificacao);
 
     criaMenuLinhaSuperior();
     criaMenuItem(STRTAM, " ");
@@ -78,3 +78,41 @@ void printaCartilha(char tipodeusuario1, int escolha, int setanotificacao){
     }
     criaMenuLinhaRodape(STRTAM);
 }
+
+void printaDadosDiarios(int setanotificacao){
+    limpaENotifica(setanotificacao);
+    gerarNotificacaoDiario();
+    if(VetorAuxiliarCodigo[0] == 0){
+        criaMenuLinhaSuperior();
+        criaMenuItem(STRTAM, " ");
+        criaMenuItem(STRTAM, "       Nenhum registro desse pet foi ");
+        criaMenuItem(STRTAM, "             encontrado nessa data");
+        criaMenuItem(STRTAM, " ");
+        criaMenuLinhaRodape(STRTAM);
+    }else{
+        criaForm();
+        criaLinhaForm();
+        printf("'''''''''' Hoje: %s  ''''''''''''",data);
+        criaLinhaForm();
+        criaLinhaForm();
+        printf("    Humor : %s",humor[VetorAuxiliarCodigo[0]]);
+        criaLinhaForm();
+        printf("    Alimentacao : %s", alimentacao[VetorAuxiliarCodigo[1]]);
+        criaLinhaForm();
+        printf("    Medicacao : %s",medicacaododia[VetorAuxiliarCodigo[2]]);
+        criaLinhaForm();
+        printf("    Urina : %s",urina[VetorAuxiliarCodigo[3]]);
+        criaLinhaForm();
+        printf("    Fezes : %s",fezes[VetorAuxiliarCodigo[4]]);
+        criaLinhaForm();
+        printf("    Irregularidades : %s",irregularidades[5]);
+        criaLinhaForm();
+        printf("");
+        criaMenuLinhaRodape(STRTAM);
+    }
+}
+
+
+
+//TODO: printa vacinas
+//TODO: printa produtos

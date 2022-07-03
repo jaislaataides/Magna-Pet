@@ -3,7 +3,7 @@
 #include "menus.h"
 #include "tratamentos.h"
 
-    char choice;
+    char escolha;
     int aux, qtdMed, qtdDiag;
     char *nome, *raca, *especie;
 
@@ -97,6 +97,36 @@ char *Especie(char *nome){
     return especie;
 }
 
+//obter idade do pet em meses
+void Idade(char *nome){
+    fflush(stdin);
+    criaLinhaForm();
+    printf("        Quantos meses tem %s? ",nome);
+    scanf("%c",&escolha);
+    animal[i].idade = escolha - '0';
+    animal[i].idade = tratamentoObterDadosDiarios(animal[i].idade, 1, 350);
+}
+
+//obter tamanho do pet em cm
+void Tamanho(char *nome){
+    fflush(stdin);
+    criaLinhaForm();
+    printf("        Qual o tamanho de %s, aproximadamente? (em cm)",nome);
+    scanf("%c",&escolha);
+    animal[i].comprimento = escolha  - '0';
+    animal[i].comprimento = tratamentoObterDadosDiarios(animal[i].comprimento, 1, 900);
+}
+
+//obter peso do pet em kg
+void Peso(){
+    fflush(stdin);
+    criaLinhaForm();
+    printf("        Quantos gramas %s pesa? ");
+    scanf("%c",&escolha);
+    animal[i].peso = escolha - '0';
+    animal[i].peso = tratamentoObterDadosDiarios(animal[i].peso, 1, 1000);
+}
+
 //obter medicacao do pet (se houver)
 void Medicacao(){
     criaLinhaForm();
@@ -135,9 +165,13 @@ void Diagnostico(){
 //--------------------------------------- D A D O S  D I A R I O S -----------------------------------------------------------------------------
 
 //---------- OBTER DADOS DIÁRIOS ----------
-int obterHumor(){
+int obterHumor(char tipodeusuario){
     criaMenuLinhaSuperior();
-    criaMenuItem(STRTAM, "          Nos conte como estava seu amiguinho hoje!");
+    if(tipodeusuario=='2'){
+        criaMenuItem(STRTAM, "Voce deseja saber em que data o animal estava: ");
+    }else{
+        criaMenuItem(STRTAM, "          Nos conte como estava seu amiguinho hoje!");
+    }
     criaMenuItem(STRTAM, " ");
     criaMenuItem(STRTAM, "          1 - calmo");
     criaMenuItem(STRTAM, "          2 - cabisbaixo");
@@ -146,57 +180,74 @@ int obterHumor(){
     criaMenuItem(STRTAM, "          5 - choramingando");
     criaMenuLinhaRodape(STRTAM);
     printf("\n          escolha: ");
-    scanf("%c", &choice);
-    aux = choice - '0';
+    scanf("%c", &escolha);
+    aux = escolha - '0';
     aux = tratamentoObterDadosDiarios(aux, 1, 5);
     return aux;
 }
 
-int obterAlimentacao(){
+int obterAlimentacao(char tipodeusuario){
     criaMenuLinhaSuperior();
-    criaMenuItem(STRTAM, "          E como foi a alimentação dele(a) hoje?");
-    criaMenuItem(STRTAM, "1 - não comeu");
-    criaMenuItem(STRTAM, "2 - comeu normalmente");
-    criaMenuItem(STRTAM, "3 - comeu algo diferente");
-    criaMenuItem(STRTAM, "4 - ração nova");
-    criaMenuItem(STRTAM, "5 - comida de humano");
+    if(tipodeusuario=='2'){
+        criaMenuItem(STRTAM, "Voce deseja conhecer a data em que se alimentou assim:");
+    }else{
+        criaMenuItem(STRTAM, "          E como foi a alimentação dele(a) hoje?");
+    }
+    criaMenuItem(STRTAM, "          1 - não comeu");
+    criaMenuItem(STRTAM, "          2 - comeu normalmente");
+    criaMenuItem(STRTAM, "          3 - comeu algo diferente");
+    criaMenuItem(STRTAM, "          4 - ração nova");
+    criaMenuItem(STRTAM, "          5 - comida de humano");
     criaMenuLinhaRodape(STRTAM);
-    scanf("%c", &choice);
-    aux = choice - '0';
+    scanf("%c", &escolha);
+    aux = escolha - '0';
     tratamentoObterDadosDiarios(aux, 1, 5);
     return aux;
 }
 
-int obterMedicacao(){
+int obterMedicacao(char tipodeusuario){
     criaMenuLinhaSuperior();
-    criaMenuItem(STRTAM, "         Fez uso de algum medicamento hoje?");
+    if(tipodeusuario=='2'){
+        criaMenuItem(STRTAM, "   Voce deseja saber em que data o animal teve mediacacao: ");
+    }else{
+        criaMenuItem(STRTAM, "         Fez uso de algum medicamento hoje?");
+    }
     criaMenuItem(STRTAM, "          1 - não");
     criaMenuItem(STRTAM, "          2 - de rotina");
     criaMenuItem(STRTAM, "          3 - outra medicação");
     criaMenuLinhaRodape(STRTAM);
-    scanf("%c", &choice);
-    aux = choice - '0';
+    scanf("%c", &escolha);
+    aux = escolha - '0';
     tratamentoObterDadosDiarios(aux, 1, 3);
     return aux;
 }
 
-int obterUrina(){
+int obterUrina(char tipodeusuario){
     criaMenuLinhaSuperior();
-    criaMenuItem(STRTAM, "         Qual era o aspecto da urina hoje?");
+    if(tipodeusuario=='2'){
+        criaMenuItem(STRTAM, "   Voce deseja saber em que data a urina do animal teve:");
+    }else{
+        criaMenuItem(STRTAM, "         Qual era o aspecto da urina hoje?");
+    }
+    
     criaMenuItem(STRTAM, "          1 - cor típica e líquida");
     criaMenuItem(STRTAM, "          2 - cor alaranjada");
     criaMenuItem(STRTAM, "          3 - cor avermelhada");
     criaMenuItem(STRTAM, "          4 - cor amarronzada");
     criaMenuLinhaRodape(STRTAM);
-    scanf("%c", &choice);
-    aux = choice - '0';
+    scanf("%c", &escolha);
+    aux = escolha - '0';
     tratamentoObterDadosDiarios(aux, 1, 4);
     return aux;
 }
 
-int obterFezes(){
+int obterFezes(char tipodeusuario){
     criaMenuLinhaSuperior();
-    criaMenuItem(STRTAM, "         Quanto as fezes, como foi hoje?");
+    if(tipodeusuario=='2'){
+        criaMenuItem(STRTAM, "  Voce quer saber em que data as fezes tiveram aspecto:");
+    }else{
+        criaMenuItem(STRTAM, "         Quanto as fezes, como foi hoje?");
+    }
     criaMenuItem(STRTAM, "          1 - normal");
     criaMenuItem(STRTAM, "          2 - preta");
     criaMenuItem(STRTAM, "          3 - branca");
@@ -207,32 +258,34 @@ int obterFezes(){
     criaMenuItem(STRTAM, "          8 - com muco amarelo");
     criaMenuItem(STRTAM, "          9 - com sangue");
     criaMenuLinhaRodape(STRTAM);
-    scanf("%c", &choice);
-    aux = choice - '0';
+    scanf("%c", &escolha);
+    aux = escolha - '0';
     tratamentoObterDadosDiarios(aux, 1, 9);
     return aux;
 }
 
-int obterIrregularidades(){
+int obterIrregularidades(char tipodeusuario){
     criaMenuLinhaSuperior();
-    criaMenuItem(STRTAM, "         Aconteceu algo de diferente?");
-    criaMenuItem(STRTAM, "          1 - vômito");
-    criaMenuItem(STRTAM, "          2 - diarréia");
+    if(tipodeusuario=='2'){
+        criaMenuItem(STRTAM, "  Voce quer saber em que data aconteceu algo de diferente?");
+    }else{
+        criaMenuItem(STRTAM, "         Aconteceu algo de diferente?");;
+    }
+    
+    criaMenuItem(STRTAM, "          1 - vomito");
+    criaMenuItem(STRTAM, "          2 - diarreia");
     criaMenuItem(STRTAM, "          3 - intestino preso");
-    criaMenuItem(STRTAM, "          4 - Ingestão incorreta de água");
+    criaMenuItem(STRTAM, "          4 - ingestao incorreta de agua");
     criaMenuItem(STRTAM, "          5 - gases");
     criaMenuItem(STRTAM, "          6 - febre");
     criaMenuItem(STRTAM, "          7 - olhos amarelados");
-    criaMenuItem(STRTAM, "          8 - não");
+    criaMenuItem(STRTAM, "          8 - nao");
     criaMenuLinhaRodape(STRTAM);
-    scanf("%c", &choice);
-    aux = choice - '0';
+    scanf("%c", &escolha);
+    aux = escolha - '0';
     tratamentoObterDadosDiarios(aux, 1, 8);
     return aux;
 }
-
-
-
 
 //codificador: vetor de inteiro para float
 float codificador(int *vetor, int exp, int pos){
@@ -242,13 +295,5 @@ float codificador(int *vetor, int exp, int pos){
     return (pow(10, exp)*vetor[pos])+codificador(vetor, exp-1, pos+1);
 }
 
-//decodificador float para vetor de inteiro
-void decodificador(float codigo, int *vetor){
-    int exp=5,aux;
-    for(i=0; i<6; i++){
-        aux = (int)codigo/pow(10,exp);
-        vetor[i] = aux%10;
-        exp--;
-    }
-}
+//decodificador integrado na funçaõ
 
