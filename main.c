@@ -19,6 +19,7 @@ struct vacinas *vacina;
 typedef struct{
     char nomepet[50], especie[20], raca[20], **medicacao, **diagnostico;
     int idade, comprimento, id; 
+    float peso;
     //sistema matricial de meses gerados a partir da quantidade de pets
     diario dados;
     struct vacinas vacina;
@@ -126,10 +127,8 @@ int main(){
     int dia = calculoDia(data), mes = calculoMes(data);
     char dd, mm;
     //variaveis de escolha
-    char escolha;
+    char escolha, string[30];
     int escolhaInt;
-
-    decodificador(123456, &VetorAuxiliarCodigo);
 
     menuInicial:
     MenuInicio();
@@ -874,11 +873,19 @@ int main(){
                 scanf("%c",&escolha);
                 switch(escolha){
                     case '1':
-                        //  TODO: MENU INFO
+                        criaMenuLinhaSuperior();
+                        criaMenuItem(STRTAM, "      CONTATO: ");
+                        criaMenuLinhaRodape(STRTAM);
+                        printf("            %s",clinica.numero);
                     break;
 
                     case '2':
-                        //TODO: SISTEMA DE PLANTÃO
+                        criaMenuLinhaSuperior();
+                        criaMenuItem(STRTAM, "      Escreva o nome do plantonista de hoje abaixo:");
+                        criaMenuLinhaRodape(STRTAM);
+                        fflush(stdin);
+                        fgets(string, 30, stdin);
+                        armazenarPlantonista(string);
                     break;
 
                     case '3':

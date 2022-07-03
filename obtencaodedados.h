@@ -295,5 +295,5 @@ float codificador(int *vetor, int exp, int pos){
     return (pow(10, exp)*vetor[pos])+codificador(vetor, exp-1, pos+1);
 }
 
-//decodificador integrado na funçaõ
+//decodificador integrado na função
 

@@ -472,6 +472,21 @@ void buscadorPorTipo(int posicao, char valor, int ID_Animal){
     }
 }
 
+armazenarPlantonista(char *nomePlantonista){
+    plantao = fopen("plantonista.txt","a");
+    fwrite(&nomePlantonista, 30 * sizeof(char), 1, plantao);
+    fprintf(plantao, "#%s\n",data);
+    fclose(plantao);
+}
+
+// void mostrarPlantonista(){
+
+// }
+
+// void printaVacina(){
+
+//     vacinas = fopen();
+// }
 //--------------------------------- M A N I P U L A Ç Ã O   D E   D A T A   ----------------------------------------------
 //extrair data do sistema
 //usar depois de set locale portugues
