@@ -8,11 +8,11 @@ FILE *dadosTutor;
 FILE *dadosClinica;
 FILE *registroTutor;
 FILE *vacinas; 
-//TODO:
-FILE *tela;//txt?
-FILE *loja;//bin
+FILE *telaTutor;
+FILE *logins;
+FILE *loja;
+FILE *plantao;
 
-//TODO: BUSCADOR DE LOGIN //bin
 
 //---- gera id sequencial dos animais ----------------------------------------------------------------------------------
 int  gerarID1(){
@@ -42,10 +42,9 @@ int  gerarID2(){
     int ID;
         fseek(ultId2, 0, SEEK_END);
         int size = ftell(ultId2);
-        printf("\n%d\n", size);
         fclose(ultId2); 
 
-        if(size == -1){
+        if(size == -1 || size == 0){
             ultId2 = fopen("UltimaID2.txt", "w");
             fprintf(ultId, "%d", 1000);
             fclose(ultId2);
@@ -76,7 +75,7 @@ void salvar(char tipodeusuario){
 
     if(tipodeusuario=='1'){
         sprintf(arquivo, "tutor%d.bin", dono.id);
-        dadosTutor = fopen(arquivo, "ab");
+        dadosTutor = fopen(arquivo, "wb");
         fwrite(&dono, sizeof(struct tutor), 1, dadosTutor);
         for(int i=0; i<dono.quantidade; i++){
             fwrite(&animal[i], sizeof(pet), 1, dadosTutor);
@@ -84,7 +83,7 @@ void salvar(char tipodeusuario){
         fclose(dadosTutor);
     }else{
         sprintf(arquivo, "clinica%d.bin", clinica.id);
-        dadosClinica = fopen(arquivo, "ab");
+        dadosClinica = fopen(arquivo, "wb");
         fwrite(&clinica, sizeof(struct clinica), 1, dadosClinica);
         for(int i=0; i<clinica.quantidade; i++){
             fwrite(&vet[i], sizeof(veterinarios), 1, dadosClinica);
@@ -134,9 +133,15 @@ void cadastrarVacina(int id, int tipodeusuario, int petEscolhido){
             fclose(registroTutor);
 
             do{
-                printf("Quantas vacinas deseja cadastrar?");
-                printf("\nLembre-se de que voce pode realizar essa etapa uma unica vez!\n");
-                printf("\n          escolha:");
+                criaMenuLinhaSuperior();
+                criaMenuItem(STRTAM, " ");
+                criaMenuItem(STRTAM, "         Quantas vacinas deseja cadastrar?");
+                criaMenuItem(STRTAM, "      Lembre-se de que voce pode realizar essa");
+                criaMenuItem(STRTAM, "                etapa uma unica vez!");
+                criaMenuItem(STRTAM, " ");
+                criaMenuLinhaRodape(STRTAM);
+                criaMenuItem(STRTAM, " ");
+                printf("\n\n                   escolha:");
                 scanf("%c",&choice);
                 qtd = choice -'0';
             }while(qtd<1 || qtd>50);
@@ -149,13 +154,46 @@ void cadastrarVacina(int id, int tipodeusuario, int petEscolhido){
             obterVacinas(qtd);
 
             fclose(vacinas);
+
             cadastroRealizado();
+
+            system("pause");
+            printf("\n\n");
+            criaMenuLinhaSuperior();
+            criaMenuItem(STRTAM, "      Voce sera direcionado ao menu");
+            criaMenuLinhaRodape(STRTAM);
+            system("pause");
+
+        }else{
+            criaMenuLinhaSuperior();
+            criaMenuItem(STRTAM, " ");
+            criaMenuItem(STRTAM, "                   OPS!");
+            criaMenuItem(STRTAM, " ");
+            criaMenuItem(STRTAM, "      Parece que voce ja cadastrou");
+            criaMenuItem(STRTAM, "        vacinas para esse pet...");
+            criaMenuItem(STRTAM, " ");
+            criaMenuItem(STRTAM, "       Agora so um profissional da");
+            criaMenuItem(STRTAM, "     saude animal pode inserir vacinas");
+            criaMenuItem(STRTAM, " ");
+            criaMenuLinhaRodape(STRTAM);
+            system("pause");
+            printf("\n\n");
+            criaMenuLinhaSuperior();
+            criaMenuItem(STRTAM, "      Voce sera direcionado ao menu");
+            criaMenuLinhaRodape(STRTAM);
+            system("pause");
         }
     }else{
         // ------------ C L Í N I C A --------------
         do{
-            printf("\nQuantas vacinas deseja registrar?");
-            scanf("%c",&choice);
+                criaMenuLinhaSuperior();
+                criaMenuItem(STRTAM, " ");
+                criaMenuItem(STRTAM, "         Quantas vacinas deseja cadastrar?");
+                criaMenuItem(STRTAM, " ");
+                criaMenuLinhaRodape(STRTAM);
+                criaMenuItem(STRTAM, " ");
+                printf("\n\n                   escolha:");
+                scanf("%c",&choice);
             qtd = choice - '0';
         }while(qtd < 1 || qtd > 10);
 
@@ -168,6 +206,13 @@ void cadastrarVacina(int id, int tipodeusuario, int petEscolhido){
         
         fclose(vacinas);
         cadastroRealizado();
+
+        system("pause");
+        printf("\n\n");
+        criaMenuLinhaSuperior();
+        criaMenuItem(STRTAM, "      Voce sera direcionado ao menu");
+        criaMenuLinhaRodape(STRTAM);
+        system("pause");
     }
 }
 
@@ -200,8 +245,177 @@ int buscarRegistro(int id, int tipodeusuario, char *arquivo){
     return 0;
 }
 
+// ---------- limpa e notifica ------------------------------------------------------------------------------------------
+void limpaENotifica(char tipodeusuario, int escolha){
+    char arquivo[20], notificacao[300];
+    system("cls");
+    fflush(stdin);
+    sprintf(arquivo, "tutor-%d.txt", dono.id);
+    //setnotifications on
+    if(tipodeusuario=='1' && escolha==1){
+        telaTutor = fopen(arquivo, "r");
+        fscanf(telaTutor, "%s", notificacao);
+        fclose(telaTutor);
+        criaMenuLinhaSuperior();
+        criaMenuItem(STRTAM, "                  LEMBRETE        ");
+        criaMenuItem(STRTAM, " ");
+        criaMenuLinhaRodape(STRTAM);
+        printaNotificacao(notificacao);
+    }else if(tipodeusuario == '2'){
+        telaTutor = fopen(arquivo, "w");
+        printf("Escreva a notificacao a seguir com espaço e sem enter: ");
+        fgets(notificacao, 300, stdin);
+        fwrite(notificacao, 300, 1, telaTutor);
+        fclose(telaTutor);
+    }
+}
 
+//exibição de mensagem fornecida pela clinica
+void printaNotificacao(char *mensagem){
+    int x;
+    if(strlen(mensagem)>50){
+        for (int i=0; mensagem[i]!='\0'; i++){
+            if(i%40==0){
+                x=i;
+            }
+            if(i>x && mensagem[i]==' '){
+                mensagem[i] = '\n';
+            }
+        }
+    }
+    for(int i=0; mensagem[i]!='\0'; i++){
+        if(mensagem[i-1]=='\n'){
+            printf("%c", 200);
+        }else{
+        printf("%c",mensagem[i]);
+        }
+    }
+}
 
+//verifica se ha registro diario na data do sistema e em caso negativo exibe mensagem de lembrete
+void gerarNotificacaoDiario(){
+    //TODO: codar decodificador -> codar buscador de dados diarios
+    printf("\n ---------------------------------------------");
+    printf("\n|             OLA, BEM VINDO(A)!              |");
+    printf("\n|          Nao se esqueca de registrar        |");
+    printf("\n|        como foi o dia de seus bichinhos     |");
+    printf("\n|                     hoje!                   |");
+    printf("\n ---------------------------------------------");
+}
+
+//armazena as structs dos usuarios que se cadastraram
+void historicoLogins(){
+    logins = fopen("logins.bin", "ab");
+    fwrite(&dono, sizeof(struct tutor), 1, logins);
+    fclose(logins);
+}
+
+//cadastro de produtos
+void cadastrarProdutos(){
+
+    int qtd;
+
+    printf("Quantos produtos deseja inserir?");
+    scanf("%d",&qtd);
+
+    produto = malloc(qtd * sizeof(vendas));
+
+    loja = fopen("Produtos.bin", "ab");
+    for(int i=0; i<qtd; i++){
+        fflush(stdin);
+        printf("\nInsira o nome do produto %d", i +1);
+        fgets(produto[i].nome, 40, stdin); 
+        printf("\nQual o codigo dele?");
+        fgets(produto[i].codigo, 10, stdin);
+        printf("\nQual a quentidade desse produaito no estoque: ");
+        scanf("%d",&produto[i].estoque);
+        printf("\nQual o preco de %s? ",produto[i].nome);
+        scanf("%f",&produto[i].preco);
+        fflush(stdin);
+    }
+    fclose(loja);
+    free(produto);
+}
+
+//verifica se os dados de login informados pelo usuario ja foram cadastrados
+int validaLogin(){
+    struct tutor auxiliar;
+    logins = fopen("logins.bin", "rb");
+    while(!feof(logins)){
+        fread(&auxiliar, sizeof(struct tutor), 1, logins);
+        if(strcmp(auxiliar.email, dono.email)==0 && strcmp(auxiliar.senha, dono.senha)==0){
+            fclose(logins);
+            return 0;
+        }
+    }
+    fclose(logins);
+    return 1;
+}
+
+//primeira etapa da busca dos animais: encontrar seus donos
+void listaUsuario(){
+    struct tutor auxiliar;
+    int i=0;
+    logins = fopen("logins.bin", "rb");
+    while(!feof(logins)){
+        fread(&auxiliar, sizeof(struct tutor), 1, logins);
+        printf("\n%d - %s",i,auxiliar.nome);
+        i++;
+    }
+    parametro = i;
+    fclose(logins);
+}
+
+//segunda etapa da busca dos animais: obter o id dos seus donos
+int encontraIDUsuario(int escolha){
+    struct tutor auxiliar;
+    int i=0;
+    logins = fopen("logins.bin", "rb");
+    while(!feof(logins)){
+        fread(&auxiliar, sizeof(struct tutor), 1, logins);
+        if(i==escolha){
+            return auxiliar.id;
+        }
+        i++;
+    }
+    fclose(logins);
+    return 1;
+}
+
+//terceira etapa da busca dos animais: encontrar todos os animais do tutor com a id encontrada
+void listaPetsPorTutor(int tutorID){
+    char arquivo[30];
+    pet auxiliar;
+    i=0;
+    sprintf(arquivo, "tutor%d.bin",tutorID);
+    dadosTutor = fopen(arquivo, "rb");
+    fseek(dadosTutor, sizeof(pet), sizeof(struct tutor));
+    while(!feof){
+        fread(&auxiliar, sizeof(pet), 1, dadosTutor);
+        printf("        %d - %s",i,auxiliar.nomepet);
+        i++;
+    }
+    parametro = i;
+    fclose(dadosTutor);
+}
+
+//etapa final da busca dos animais: obter o id do animal desejado
+int encontraPet(int escolha, int tutorID){
+    char arquivo[30];
+    pet auxiliar;
+    i=0;
+    sprintf(arquivo, "tutor%d.bin",tutorID);
+    dadosTutor = fopen(arquivo, "rb");
+    fseek(dadosTutor, sizeof(pet), sizeof(struct tutor));
+    while(!feof){
+        fread(&auxiliar, sizeof(pet), 1, dadosTutor);
+        if(i==escolha){
+            return auxiliar.id;
+        }
+        i++;
+    }
+    fclose(dadosTutor);
+}
 
 //--------------------------------- M A N I P U L A Ç Ã O   D E   D A T A   ----------------------------------------------
 //extrair data do sistema

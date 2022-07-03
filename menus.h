@@ -57,6 +57,7 @@ void MenuInicio()
     criaMenuItem(STRTAM, "              2 - Login");
     criaMenuItem(STRTAM, "              0 - Sair");
     criaMenuLinhaRodape(STRTAM);
+    printf("\n\n            escolha: ");
     fflush(stdin);
 }
 
@@ -69,8 +70,9 @@ void Menu_Tutor()
     criaMenuItem(STRTAM, "       3 - Cartao de Vacinas");
     criaMenuItem(STRTAM, "       4 - Diario Pet ");
     criaMenuItem(STRTAM, "       5 - Clinica");
-    criaMenuItem(STRTAM, "           0 - Sair");
+    criaMenuItem(STRTAM, "       0 - Sair");
     criaMenuLinhaRodape(STRTAM);
+    printf("\n\n            escolha: ");
     fflush(stdin);
 }
 
@@ -81,8 +83,9 @@ void Menu_Cartilha_Tutor()
     criaMenuItem(STRTAM, "      1 - Editar Informacoes");
     criaMenuItem(STRTAM, "      2 - Visualizar Informacoes");
     criaMenuItem(STRTAM, "      3 - Voltar ao Menu Principal");
-    criaMenuItem(STRTAM, "              0 - Sair");
+    criaMenuItem(STRTAM, "      0 - Sair");
     criaMenuLinhaRodape(STRTAM);
+    printf("\n\n            escolha: ");
     fflush(stdin);
 }
 
@@ -94,8 +97,9 @@ void Menu_Clinica_Tutor()
     criaMenuItem(STRTAM, "      2 - Contato Clinica");
     criaMenuItem(STRTAM, "      3 - Agendar Consulta");
     criaMenuItem(STRTAM, "      4 - Voltar ao Menu Principal");
-    criaMenuItem(STRTAM, "              0 - Sair");
+    criaMenuItem(STRTAM, "      0 - Sair");
     criaMenuLinhaRodape(STRTAM);
+    printf("\n\n            escolha: ");
     fflush(stdin);
 }
 
@@ -107,8 +111,9 @@ void Menu_CadPet_Tutor()
     criaMenuItem(STRTAM, "      2 - Visualizar Vacinas");
     criaMenuItem(STRTAM, "      3 - Cadastrar Vacinas");
     criaMenuItem(STRTAM, "      4 - Voltar ao Menu Principal");
-    criaMenuItem(STRTAM, "              0 - Sair");
+    criaMenuItem(STRTAM, "      0 - Sair");
     criaMenuLinhaRodape(STRTAM);
+    printf("\n\n            escolha: ");
     fflush(stdin);
 }
 
@@ -120,8 +125,9 @@ void Menu_Vacinas_Tutor()
     criaMenuItem(STRTAM, "      2 - Visualizar Vacinas");
     criaMenuItem(STRTAM, "      3 - Cadastrar Vacinas");
     criaMenuItem(STRTAM, "      4 - Voltar ao Menu Principal");
-    criaMenuItem(STRTAM, "              0 - Sair");
+    criaMenuItem(STRTAM, "      0 - Sair");
     criaMenuLinhaRodape(STRTAM);
+    printf("\n\n            escolha: ");
     fflush(stdin);
 }
 
@@ -133,8 +139,9 @@ void Menu_Pet_Tutor()
     criaMenuItem(STRTAM, "      2 - Editar Informacoes");
     criaMenuItem(STRTAM, "      3 - Pesquisar Informacoes");
     criaMenuItem(STRTAM, "      4 - Voltar ao Menu Principal");
-    criaMenuItem(STRTAM, "              0 - Sair");
+    criaMenuItem(STRTAM, "      0 - Sair");
     criaMenuLinhaRodape(STRTAM);
+    printf("\n\n            escolha: ");
     fflush(stdin);
 }
 
@@ -149,6 +156,7 @@ void Menu_Clinica()
     criaMenuItem(STRTAM, "      4 - Contato");
     criaMenuItem(STRTAM, "      0 - Sair");
     criaMenuLinhaRodape(STRTAM);
+    printf("\n\n            escolha: ");
     fflush(stdin);
 }
 
@@ -160,8 +168,9 @@ void Menu_Vacinas_Clinica()
     criaMenuItem(STRTAM, "      2 - Editar Vacinas");
     criaMenuItem(STRTAM, "      3 - Inserir Avisos");
     criaMenuItem(STRTAM, "      4 - Voltar ao Menu Principal");
-    criaMenuItem(STRTAM, "           0 - Sair");
+    criaMenuItem(STRTAM, "      0 - Sair");
     criaMenuLinhaRodape(STRTAM);
+    printf("\n\n            escolha: ");
     fflush(stdin);
 }
 
@@ -172,8 +181,9 @@ void Menu_Contato_Clinica()
     criaMenuItem(STRTAM, "      1 - Informações de Contato");
     criaMenuItem(STRTAM, "      2 - Editar Plantonista");
     criaMenuItem(STRTAM, "      3 - Voltar ao Menu Principal");
-    criaMenuItem(STRTAM, "              0 - Sair");
+    criaMenuItem(STRTAM, "      0 - Sair");
     criaMenuLinhaRodape(STRTAM);
+    printf("\n\n            escolha: ");
     fflush(stdin);
 }
 
@@ -184,8 +194,9 @@ void Menu_Pet_Clinica()
     criaMenuItem(STRTAM, "      1 - Buscar informacoes por data");
     criaMenuItem(STRTAM, "      2 - Buscar informacoes por tipo");
     criaMenuItem(STRTAM, "      3 - Voltar ao Menu Principal");
-    criaMenuItem(STRTAM, "              0 - Sair");
+    criaMenuItem(STRTAM, "      0 - Sair");
     criaMenuLinhaRodape(STRTAM);
+    printf("\n\n            escolha: ");
     fflush(stdin);
 }
 
@@ -197,8 +208,9 @@ void Menu_Produtos_Clinica()
     criaMenuItem(STRTAM, "      2 - Editar Produtos");
     criaMenuItem(STRTAM, "      3 - Visualizar Produtos");
     criaMenuItem(STRTAM, "      4 - Voltar ao Menu Principal");
-    criaMenuItem(STRTAM, "              0 - Sair");
+    criaMenuItem(STRTAM, "      0 - Sair");
     criaMenuLinhaRodape(STRTAM);
+    printf("\n\n            escolha: ");
     fflush(stdin);
 }
 

@@ -67,8 +67,22 @@
 <h5>Atualizações</h5>
 
 <ul>
-<li><strong>Criação </strong> de aramazenamento nexo entre tutor-pet e clínica-veterinário;</li>
+<li><strong>Criação </strong> de armazenamento anexo entre tutor-pet e clínica-veterinário;</li>
 <li><strong>Implementação</strong> de salvamento das informações de cadastro em arquivo externo sigiloso.</li>
+</ul>
+
+<hr>
+
+<h4>Versão 6 - hash</h4>
+
+<br>
+
+<h5>Atualizações</h5>
+
+<ul>
+<li><strong>São tantas </strong> que eu me perdi;</li>
+<li><strong>Implementações: </strong> não sei, espero ter ajudado.</li>
+<li><strong>SÓ DIGO QUE COMPILOU</strong></li>
 </ul>
 
 <hr>

@@ -3,6 +3,7 @@
 //tratamento email
 void tratamentoEmail(char *email){
     while(validadordeemail(email)==1){
+        fflush(stdin);
         criaLinhaForm();
         printf("O email digitado nao e valido.");
         criaLinhaForm();
@@ -19,15 +20,13 @@ void tratamentoCPFCNPJ(char *input){
         while(validadordecpf(input)==1){
             criaLinhaForm();
             printf("O CPF digitado nao e valido, por favor, digite novamente: ");
-            fgets(input, 11, stdin);
-            printf("\n\n");
+            fgets(input, 12, stdin);
         }
     }else if(strlen(input)==14){
         while(validadordecnpj(input)==1){
             criaLinhaForm();
             printf("O CNPJ digitado nao e valido, por gentileza, digite novamente: ");
             fgets(input, 14, stdin);
-            printf("\n\n");
         }
     }else{
             criaLinhaForm();
@@ -63,6 +62,7 @@ void tratamentoConfirmacao(char *palavra1, char *palavra2, char *palavra3){
 //tratamento ascii
 void tratamentoASCII(char *palavra){
     while(validadordeAscii(palavra)==1){
+        fflush(stdin);
         criaLinhaForm();
         printf("Voce esta inserindo caracteres invalidos neste campo.");
         criaLinhaForm();

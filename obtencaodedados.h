@@ -3,21 +3,21 @@
 #include "menus.h"
 #include "tratamentos.h"
 
-
-
     char choice;
-    int aux;
+    int aux, qtdMed, qtdDiag;
+    char *nome, *raca, *especie;
 
 
 //-------------------------------------- C A D A S T R O --------------------------------------------------------------
 
 //obter nome do usuário ou pet
 char *Nome(){
-    char *nome = malloc(50 * sizeof(char));
-    criaForm();
-    printf("Digite o nome: ");
+    free(nome);
+    nome = malloc(50 * sizeof(char));
+    criaLinhaForm();
+    printf("        Digite o nome: ");
+    fflush(stdin);
     fgets(nome, 50, stdin);
-
     tratamentoASCII(nome);
     return nome;
 }
@@ -26,7 +26,7 @@ char *Nome(){
 char *CPF(){
     char *input = malloc(14*sizeof(char));
     criaLinhaForm();
-    printf("Digite seu CPF ou CNPJ: ");
+    printf("        Digite seu CPF ou CNPJ: ");
     fgets(input, 15, stdin);
     tratamentoCPFCNPJ(input);
     return input;
@@ -36,7 +36,7 @@ char *CPF(){
 char *Email(){
     char *email = malloc(20 * sizeof(char));
     criaLinhaForm();
-    printf("Digite o email: ");
+    printf("        Digite o email: ");
     fgets(email, 30, stdin);
     tratamentoEmail(email);
     return email;
@@ -46,7 +46,7 @@ char *Email(){
 char *Senha(){
     char *senha = malloc(10 * sizeof(char));
     criaLinhaForm();
-    printf("Digite sua senha (6 - 10 digitos): ");
+    printf("        Digite sua senha (6 - 10 digitos): ");
     fgets(senha, 10, stdin);
     fflush(stdin);
     return senha;
@@ -56,7 +56,7 @@ char *Senha(){
 void Confirma(char *palavra1, char *palavra3){
     char *palavra2 = malloc(20 * sizeof(char));
     criaLinhaForm();
-    printf("Confirme %s: ",palavra1);
+    printf("        Confirme %s: ",palavra3);
     fgets(palavra2, 30, stdin);
     fflush(stdin);
     tratamentoConfirmacao(palavra1, palavra2, palavra3);
@@ -68,8 +68,8 @@ void Confirma(char *palavra1, char *palavra3){
 //setar vetor struct
 int Quantidade(char *palavra){
     int *quant = malloc(sizeof(int));
-    criaLinhaForm();
-    printf("Quantos pets deseja cadastrar? \n");
+    criaForm();
+    printf("        Quantos pets deseja cadastrar? \n");
     scanf("%d",&quant);
     tratamentoQuantidade(quant, palavra);
     return quant;
@@ -77,9 +77,10 @@ int Quantidade(char *palavra){
 
 //obter raca do pet
 char *Raca (char *nome){
-    char *raca = malloc(20 * sizeof(char));
+    free(raca);
+    raca = malloc(20 * sizeof(char));
     criaLinhaForm();
-    printf("Qual a raca de %s?\n",nome);
+    printf("        Qual a raca de %s?\n",nome);
     fgets(raca, 20, stdin);
     tratamentoASCII(raca);
     return raca;
@@ -87,9 +88,10 @@ char *Raca (char *nome){
 
 //obter especie do pet
 char *Especie(char *nome){
-    char *especie = malloc(20 * sizeof(char));
+    free(especie);
+    especie = malloc(20 * sizeof(char));
     criaLinhaForm();
-    printf("\nQual a especie de %s? ", nome);
+    printf("        Qual a especie de %s ? ", nome);
     fgets(especie, 20, stdin);
     tratamentoASCII(especie);
     return especie;
@@ -97,30 +99,32 @@ char *Especie(char *nome){
 
 //obter medicacao do pet (se houver)
 void Medicacao(){
-    int qtd;
     criaLinhaForm();
-    printf("\n%s faz uso de alguma medicacao? Digite 0 caso nao ou a quantidade de medicamentos: ",dono.animal.nomepet);
-    scanf("%d",&qtd);
-    animal[i].medicacao = malloc(qtd * sizeof(char*));
-    for (i=0; i<qtd; i++){
+    printf("    %s faz uso de alguma medicacao? ");
+    criaLinhaForm();
+    printf("    Digite 0 caso nao ou a quantidade de medicamentos: ",dono.animal.nomepet);
+    scanf("%d",&qtdMed);
+    animal[i].medicacao = malloc(qtdMed * sizeof(char*));
+    for (i=0; i<qtdMed; i++){
         animal[i].medicacao[i] = malloc(40 * sizeof(char));
         fflush(stdin);
-        printf("\nDigite o nome do %d medicamento: ",i+1);
+        criaLinhaForm();
+        printf("    Digite o nome do %d medicamento: ",i+1);
         fgets(animal[i].medicacao[i], 40, stdin);
     }  
 } 
 
 //obter diagnostico
 void Diagnostico(){
-    int qtd;
     criaLinhaForm();
     printf("\n%s tem alguma doenca cronica, disfuncao ou outro diagnostico?\nDigite 0 caso nao ou a quantidade de diagnosticos: ");
-    scanf("%d",&qtd);
-    dono.animal.diagnostico = malloc(qtd * sizeof(char*));
-    for(i=0; i<qtd; i++){
+    scanf("%d",&qtdDiag);
+    dono.animal.diagnostico = malloc(qtdDiag * sizeof(char*));
+    for(i=0; i<qtdDiag; i++){
         animal[i].diagnostico[i] = malloc(40 * sizeof(char));;
         fflush(stdin);
-        printf("\nDigite o nome do problema: ");
+        criaLinhaForm();
+        printf("    Digite o nome do problema: ");
         fgets(animal[i].diagnostico[i], 40, stdin);
     }
 }
@@ -231,7 +235,6 @@ int obterIrregularidades(){
 
 
 //codificador: vetor de inteiro para float
-//FIXME: melhorar relação primeira posição do vetor
 float codificador(int *vetor, int exp, int pos){
     if(exp==0){
         return vetor[pos];
@@ -239,4 +242,13 @@ float codificador(int *vetor, int exp, int pos){
     return (pow(10, exp)*vetor[pos])+codificador(vetor, exp-1, pos+1);
 }
 
-//TODO:float decodificador(float)
+//decodificador float para vetor de inteiro
+void decodificador(float codigo, int *vetor){
+    int exp=5,aux;
+    for(i=0; i<6; i++){
+        aux = (int)codigo/pow(10,exp);
+        vetor[i] = aux%10;
+        exp--;
+    }
+}
+
